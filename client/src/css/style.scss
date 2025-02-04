@@ -1,0 +1,151 @@
+// colors 
+$dark: #000;
+$light: #fff;
+
+div#root {
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    display: block;
+
+    .main_class {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+    }
+}
+
+.contact-us-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.form-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.form-content {
+    max-width: 80%;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.image-section {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    border-left: 2px solid #e0e0e0;
+}
+
+.form-content h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-content p {
+    font-size: 14px;
+    color: #666;
+}
+
+.form-content .btn-primary {
+    background-color: #795548;
+    border: none;
+}
+
+.form-content .btn-primary:hover {
+    background-color: #5d4037;
+}
+
+.form-content a {
+    text-decoration: none;
+    color: #795548;
+}
+
+.form-content a:hover {
+    text-decoration: underline;
+}
+
+.main-section {
+    display: flex;
+    margin-bottom: 1rem;
+
+    .input-field-section {
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    input,
+    .input-field-section span {
+        margin-left: 1rem;
+    }
+}
+
+.main-section.input-error {
+
+    input {
+        border-color: rgb(255, 0, 0);
+    }
+}
+
+//******** Header Start ********//
+
+nav.nav.nav-menu {
+    a {
+        margin: 0 1.5rem;
+        text-decoration: none;
+        font-size: 1rem;
+        color: $dark;
+        text-transform: capitalize;
+    }
+}
+
+//******** Header End ********//
+
+//******** Login Start ********//
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 80vh;
+
+    .card {
+        width: 500px;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .invalid-feedback {
+        display: block;
+    }
+}
+
+//******** Login End ********//

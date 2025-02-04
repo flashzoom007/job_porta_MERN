@@ -1,0 +1,9 @@
+automl
+/client/.env
+/backend/.env
+/client/ai_testing_data.json
+/ai/__pycache__/
+/ai/modules/__pycache__/
+.idea/
+/client/node_modules/
+/backend/node_modules
