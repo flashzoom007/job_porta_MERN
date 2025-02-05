@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const path = require("path");
+const logger = require("../utils/logger");
+
 
 // Login/ Sign Up
 const Login = async (req, res) => {
@@ -156,9 +158,38 @@ const storage = multer.diskStorage({
     }
 });
 
-// Initialize Multer Middleware
-const uploadFile = multer({ storage: storage }).single('file');
+const upload = multer({ storage: storage }).single('file');
+
+const uploadFile = (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
+            console.error('Upload error:', err);
+            return res.status(500).json({ message: 'File upload failed', statusCode: 500 });
+        }
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded', statusCode: 400 });
+        }
+
+        res.json({
+            message: 'File uploaded successfully',
+            fileName: req.file.filename,
+            statusCode: 200
+        });
+    });
+}
+
+// Log Login credentails send for log file
+const logLogin = (req, res) => {
+    const { userId, userName, email } = req.body;
+
+    if (!userId || !userName || !email) {
+        return res.status(400).json({ message: "Missing required fields." });
+    }
+    const logMessage = `[LOGIN] User: ${userName} (ID: ${userId}, Email: ${email}) logged in successfully.`;
+    logger.info(logMessage);
+    return res.status(200).json({ message: "Login logged successfully." });
+};
 
 module.exports = {
-    userCreate, showUsers, Login, deleteUser, updateUser, updateShowUser, uploadFile
+    userCreate, showUsers, Login, deleteUser, updateUser, updateShowUser, uploadFile, logLogin
 };

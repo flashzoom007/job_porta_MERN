@@ -4,9 +4,15 @@ const Header = () => {
     const navigate = useNavigate();
     const isauthenticated = localStorage.getItem("userToken");
     const userRole = localStorage.getItem("userRole");
+    const userId = localStorage.getItem("userId");
+    const userName = localStorage.getItem("userName");
+
     const handleLogout = () => {
         localStorage.removeItem("userToken");
         localStorage.removeItem("userRole");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userName");
+
         navigate("/login");
     }
     return (
@@ -28,12 +34,20 @@ const Header = () => {
                         <Link to="/contact">Contact</Link>
                     </nav>
 
-                    <button type="button" className="btn btn-outline-secondary d-flex align-items-center mt-3 mt-md-0">
-                        {isauthenticated ? (<Link to="/login" onClick={handleLogout} className="text-dark text-decoration-none">Logout</Link>) : (<Link to="/login" className="text-dark text-decoration-none">Login</Link>)}
-                        <svg fill="none" stroke="currentColor" className="bi bi-arrow-right ms-2" width="16" height="16" viewBox="0 0 24 24">
-                            <path d="M5 12h14M12 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
+                    <Link to="/login"
+                        onClick={handleLogout}
+                        className="text-dark text-decoration-none">
+                        <button type="button"
+                            className="btn btn-outline-secondary d-flex align-items-center mt-3 mt-md-0">
+
+                            {isauthenticated ? 'Logout' : 'Login'}
+
+                            <svg fill="none" stroke="currentColor" className="bi bi-arrow-right ms-2" width="16" height="16" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7">  </path>
+                            </svg>
+                        </button>
+                    </Link>
+
                 </div>
             </header>
 

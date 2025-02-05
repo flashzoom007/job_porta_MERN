@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { handleFileChange, handleUpload } from "./CommonApi";
+import { FaAngleLeft } from "react-icons/fa";
 
 const UpdateUser = () => {
     const { id } = useParams();
@@ -79,9 +80,12 @@ const UpdateUser = () => {
         <div className="container form-container">
             <div className="card ">
                 <div className="card-body">
-
-                    <h2 className="card-title text-center mb-4 h1 fw-bold">Update User</h2>
-
+                    <div className='d-flex justify-content-between align-items-baseline'>
+                        <h2 className="card-title text-center mb-4 h1 fw-bold">Update User</h2>
+                        <Link to='/users' className="text-decoration-none">
+                            <button className="btn btn-outline-primary link-hover"> <FaAngleLeft /> Back </button>
+                        </Link>
+                    </div>
                     <form onSubmit={handleSubmit(onSubmit)} method="POST">
                         <div className="mb-3">
                             <label className="form-label">Full Name</label>
@@ -119,11 +123,24 @@ const UpdateUser = () => {
                             <label className="form-label">Phone Number</label>
                             <input
                                 type="text"
-                                {...register("number", { required: true })}
-                                className={`form-control ${errors.number ? "is-invalid" : ""}`}
+                                {...register('number', {
+                                    required: true,
+                                    minLength: {
+                                        value: 10,
+                                        message: 'Full name must be at least 10 characters long'
+                                    }
+                                },
+                                    {
+                                        maxLength: {
+                                            value: 13,
+                                            message: 'Full name must be at most 13 characters long'
+                                        }
+
+                                    })}
+                                className={`form-control ${errors.number ? 'is-invalid' : ''}`}
                             />
                             {errors.number && (
-                                <div className="invalid-feedback">Phone Number is required</div>
+                                <div className="invalid-feedback">{errors.number.message}</div>
                             )}
                         </div>
 

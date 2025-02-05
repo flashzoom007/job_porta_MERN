@@ -5,6 +5,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../css/style.css'
 import { useState } from 'react';
 import { handleFileChange, handleUpload } from "./Users/CommonApi";
+import { FaAngleLeft } from "react-icons/fa";
+
+
 const Job = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
@@ -55,9 +58,11 @@ const Job = () => {
           <div className="card-body">
             <div className='d-flex justify-content-between align-items-baseline'>
               <h2 className="card-title text-center mb-4 h1 fw-bold">Add User</h2>
-              <button className="btn btn-outline-primary link-hover">
-                <Link to='/users' className="text-decoration-none">Back</Link>
-              </button>
+
+              <Link to='/users' className="text-decoration-none">
+                <button className="btn btn-outline-primary link-hover"> <FaAngleLeft /> Back </button>
+              </Link>
+
             </div>
             <form onSubmit={handleSubmit(onSubmit)} method="POST">
 

@@ -46,11 +46,19 @@ const Login = () => {
 
                 localStorage.setItem("userToken", userToken);
                 localStorage.setItem("userRole", userRole);
+                localStorage.setItem("userId", responseData.user.id);
+                localStorage.setItem("userName", responseData.user.name);
 
-                toast.success(responseData.message);
+                // Send user details to backend for logging
+                await axios.post(`${import.meta.env.VITE_BACKEND_URL}/log-login`, {
+                    userId: responseData.user.id,
+                    userName: responseData.user.name,
+                    email: responseData.user.email,
+                });
+
                 navigate("/users", { replace: true });
             } else {
-                toast.error(responseData.message);
+                toast.error(response.data.message);
             }
         } catch (err) {
             console.error("Error:", err);
@@ -63,7 +71,7 @@ const Login = () => {
             <div className="card p-4 shadow-lg rounded" style={{ width: "350px" }}>
                 <h3 className="text-center mb-3">Login</h3>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                   
+
                     <div className="mb-3">
                         <label className="form-label">Role:</label>
                         <select

@@ -7,6 +7,7 @@ import { CiFilter } from "react-icons/ci";
 import { FaSortAlphaUp, FaSortAlphaUpAlt, FaEdit, FaTrash } from "react-icons/fa";
 import { fetchUsers, filterUsersByRole, handleSort, handleDelete } from './Users/CommonApi';
 import { Link } from "react-router-dom";
+import { FaAngleRight } from "react-icons/fa6";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -93,9 +94,11 @@ const Users = () => {
                         >
                             Show Popup
                         </button>
-                        <button className="btn btn-outline-primary link-hover w-25">
-                            <Link to='/job' className="text-decoration-none">Add User</Link>
-                        </button>
+
+                        <Link to='/job' className="text-decoration-none w-25 text-end">
+                            <button className="btn btn-outline-primary link-hover">Add User <FaAngleRight /></button>
+                        </Link>
+
                     </div>
                     <div className="table-responsive">
                         {/* Users Table */}

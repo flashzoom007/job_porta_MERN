@@ -26,7 +26,7 @@ const Home = () => {
           }
         },
         title: {
-          text: 'Radar Chart - Multi Series'
+          // text: 'Radar Chart - Multi Series'
         },
         stroke: {
           width: 2
