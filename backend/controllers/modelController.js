@@ -1,8 +1,10 @@
 const conn = require('../utils/db');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const multer = require("multer");
+const path = require("path");
 
-//! Login/ Sign Up
+// Login/ Sign Up
 const Login = async (req, res) => {
     try {
         const { email, password, role } = req.body;
@@ -43,15 +45,13 @@ const Login = async (req, res) => {
     }
 }
 
-//! Create a new user
+// Create a new user
 const userCreate = async (req, res) => {
     try {
         const { name, email, password, role, number, file_upload } = req.body;
-
         if (!name || !email || !password || !role) {
             return res.json({ message: "Missing required fields", statusCode: 400 });
         }
-        // Check if the email already exists
         const checkQuery = `SELECT * FROM users WHERE email = ?`;
         const [existingUsers] = await conn.promise().query(checkQuery, [email]);
 
@@ -60,7 +60,7 @@ const userCreate = async (req, res) => {
         }
 
         const query = `INSERT INTO users (name, email, password, role, number, file_upload) VALUES (?, ?, ?, ?, ?, ?)`;
-        const values = [name, email, password, role, number, file_upload || null];
+        const values = [name, email, password, role, number, file_upload];
         const [result] = await conn.promise().query(query, values);
 
         res.json({ message: "User created successfully", userId: result.insertId, statusCode: 200 });
@@ -70,7 +70,7 @@ const userCreate = async (req, res) => {
     }
 };
 
-//! Delete new user
+// Delete new user
 const deleteUser = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -92,24 +92,30 @@ const deleteUser = async (req, res) => {
     }
 }
 
-//? Update new user
-// UPDATE `users` SET `id`='[value-1]',`name`='[value-2]',`email`='[value-3]',`password`='[value-4]',`role`='[value-5]',`file_upload`='[value-6]',`number`='[value-7]',`created_at`='[value-8]' WHERE 1
+// Update new user   
 const updateUser = async (req, res) => {
     try {
-        const { id, name, email, password, role, number, file_upload } = req.body;
-
+        const { id, fullname, password, role, number, file_upload } = req.body;
+        const name = fullname;
         if (!id) {
             return res.status(400).json({ message: "User ID is required", status: 400 });
         }
         const query = `UPDATE users SET name=?,password=?,role=?,file_upload=?,number=? WHERE id = ?`;
 
+        const value = [name, password, role, file_upload, number, id];
+        const [result] = await conn.promise().query(query, value);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "User not found", status: 404 });
+        }
+
+        res.json({ message: "User updated successfully", status: 200 });
     } catch (error) {
         res.json({ message: "Internal server error on create user", statusCode: 500 });
     }
 };
 
-
-//! Display all users
+// Display all users
 const showUsers = async (req, res) => {
     try {
         const query = 'SELECT * FROM `users` WHERE 1;';
@@ -124,6 +130,35 @@ const showUsers = async (req, res) => {
     }
 }
 
+// For update show User 
+const updateShowUser = async (req, res) => {
+    const { id } = req.query;
+    try {
+        const query = 'SELECT * FROM `users` WHERE id = ?;';
+        const [user] = await conn.promise().query(query, [id]);
+        if (user.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json({ user: user[0] });
+    } catch (error) {
+        res.json({ message: 'Internal server error on show user', statusCode: 500 });
+    }
+}
+
+// Image store in frontend
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const uploadPath = path.join(__dirname, '../../client/public/upload');
+        cb(null, uploadPath);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname); // Ensure unique filename
+    }
+});
+
+// Initialize Multer Middleware
+const uploadFile = multer({ storage: storage }).single('file');
+
 module.exports = {
-    userCreate, showUsers, Login, deleteUser, updateUser
+    userCreate, showUsers, Login, deleteUser, updateUser, updateShowUser, uploadFile
 };

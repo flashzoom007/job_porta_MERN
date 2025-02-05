@@ -50,7 +50,13 @@ const Chart = ({ roleCounts }) => {
     const handleChartTypeChange = (event) => {
         const selectedType = event.target.value;
         setChartType(selectedType);
-
+    
+        const total = roleCounts.admin + roleCounts.student + roleCounts.recruiter;
+    
+        const adminPercentage = total ? parseFloat(((roleCounts.admin / total) * 100).toFixed(2)) : 0;
+        const studentPercentage = total ? parseFloat(((roleCounts.student / total) * 100).toFixed(2)) : 0;
+        const recruiterPercentage = total ? parseFloat(((roleCounts.recruiter / total) * 100).toFixed(2)) : 0;
+    
         setChartOptions((prevOptions) => ({
             ...prevOptions,
             chart: {
@@ -68,23 +74,19 @@ const Chart = ({ roleCounts }) => {
                     }
                     : {},
         }));
-
+    
         if (selectedType === "donut") {
-            setChartSeries([
-                roleCounts.admin || 0,
-                roleCounts.student || 0,
-                roleCounts.recruiter || 0,
-            ]);
+            setChartSeries([adminPercentage, studentPercentage, recruiterPercentage]);
         } else {
             setChartSeries([
                 {
                     name: "Users by Role",
-                    data: [roleCounts.admin || 0, roleCounts.student || 0, roleCounts.recruiter || 0],
+                    data: [adminPercentage, studentPercentage, recruiterPercentage],
                 },
             ]);
         }
     };
-
+    
     return (
         <div className="m-2">
             <div className="mb-3">

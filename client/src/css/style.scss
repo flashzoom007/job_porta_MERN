@@ -1,9 +1,24 @@
 // colors 
 $dark: #000;
 $light: #fff;
+$clr-grey: #cfd3d6;
+$clr-primary: #0d6efd;
 
 div#root {
     width: 100%;
+}
+
+.clr-grey {
+    background-color: $clr-grey;
+}
+
+.link-hover {
+    &:hover a {
+        color: $light;
+    }
+    a{
+        color: $clr-primary
+    }
 }
 
 body {

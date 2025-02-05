@@ -9,7 +9,7 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("");
-
+    const [loading, setLoading] = useState(false);
     const {
         register,
         handleSubmit,
@@ -59,36 +59,57 @@ const Login = () => {
     };
 
     return (
-        <>
-            <div className='container'>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="card p-4 shadow-lg rounded" style={{ width: "350px" }}>
+                <h3 className="text-center mb-3">Login</h3>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <label>Role:</label>
-                        <select {...register('role', { required: true })}>
+                   
+                    <div className="mb-3">
+                        <label className="form-label">Role:</label>
+                        <select
+                            className={`form-select ${errors.role ? 'is-invalid' : ''}`}
+                            {...register('role', { required: "Role field is required" })}
+                        >
                             <option value="">Select Role</option>
                             <option value="student">Student</option>
                             <option value="recruiter">Recruiter</option>
                             <option value="admin">Admin</option>
                         </select>
-                        {errors.role && <span className='text-danger'>Role feild is required</span>}
+                        {errors.role && <div className="invalid-feedback">{errors.role.message}</div>}
                     </div>
-                    <div>
-                        <label>Email:</label>
-                        <input type='text' {...register('email', { required: true })} />
-                        {errors.email && <span className='text-danger'>Email Field is required</span>}
+
+                    {/* Email Input */}
+                    <div className="mb-3">
+                        <label className="form-label">Email:</label>
+                        <input
+                            type="email"
+                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                            {...register('email', { required: "Email field is required" })}
+                        />
+                        {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                     </div>
-                    <div>
-                        <label>Password:</label>
-                        <input type='password' {...register('password', { required: true })} />
-                        {errors.password && <span className='text-danger'>Password Field is required</span>}
+
+                    {/* Password Input */}
+                    <div className="mb-3">
+                        <label className="form-label">Password:</label>
+                        <input
+                            type="password"
+                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                            {...register('password', { required: "Password field is required" })}
+                        />
+                        {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
                     </div>
-                    <div>
-                        <input type='submit' disabled={isSubmitting} value={isSubmitting ? 'Submitting' : 'Login'} />
+
+                    {/* Submit Button */}
+                    <div className="d-grid">
+                        <button type="submit" className="btn btn-primary" disabled={isSubmitting || loading}>
+                            {loading ? "Logging in..." : "Login"}
+                        </button>
                     </div>
                 </form>
             </div>
-        </>
-    )
-}
+        </div>
+    );
+};
 
-export default Login
+export default Login;

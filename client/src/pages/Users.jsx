@@ -5,9 +5,8 @@ import { Modal, Button } from "react-bootstrap";
 import Chart from './Popup/Chart';
 import { CiFilter } from "react-icons/ci";
 import { FaSortAlphaUp, FaSortAlphaUpAlt, FaEdit, FaTrash } from "react-icons/fa";
-
-// Import API functions
-import { fetchUsers, filterUsersByRole, handleSort, handleDelete } from './usersApi/api';
+import { fetchUsers, filterUsersByRole, handleSort, handleDelete } from './Users/CommonApi';
+import { Link } from "react-router-dom";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -76,7 +75,7 @@ const Users = () => {
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
-                <div className="table-responsive">
+                <div className="">
                     <div className="d-flex justify-content-between mb-3">
                         <select
                             id="chartType"
@@ -88,75 +87,80 @@ const Users = () => {
                             <option value="student">Student ({roleCounts.student || 0})</option>
                             <option value="recruiter">Recruiters ({roleCounts.recruiter || 0})</option>
                         </select>
-                        {/* Popup button */}
                         <button
                             className="btn btn-primary w-25 p-2"
                             onClick={() => setShowPopup(true)}
                         >
                             Show Popup
                         </button>
+                        <button className="btn btn-outline-primary link-hover w-25">
+                            <Link to='/job' className="text-decoration-none">Add User</Link>
+                        </button>
                     </div>
-
-                    {/* Users Table */}
-                    <table className="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th onClick={() => sortUsers("name")} style={{ cursor: "pointer" }}>
-                                    Name {sortConfig.key === "name" ? (sortConfig.direction === "asc" ? <FaSortAlphaUp /> : <FaSortAlphaUpAlt />) : <CiFilter />}
-                                </th>
-                                <th onClick={() => sortUsers("email")} style={{ cursor: "pointer" }}>
-                                    Email {sortConfig.key === "email" ? (sortConfig.direction === "asc" ? <FaSortAlphaUp /> : <FaSortAlphaUpAlt />) : <CiFilter />}
-                                </th>
-                                <th onClick={() => sortUsers("role")} style={{ cursor: "pointer" }}>
-                                    Role {sortConfig.key === "role" ? (sortConfig.direction === "asc" ? <FaSortAlphaUp /> : <FaSortAlphaUpAlt />) : <CiFilter />}
-                                </th>
-                                <th onClick={() => sortUsers("number")} style={{ cursor: "pointer" }}>
-                                    Phone {sortConfig.key === "number" ? (sortConfig.direction === "asc" ? <FaSortAlphaUp /> : <FaSortAlphaUpAlt />) : <CiFilter />}
-                                </th>
-                                <th>File Upload</th>
-                                <th onClick={() => sortUsers("created_at")} style={{ cursor: "pointer" }}>
-                                    Created {sortConfig.key === "created_at" ? (sortConfig.direction === "asc" ? <FaSortAlphaUp /> : <FaSortAlphaUpAlt />) : <CiFilter />}
-                                </th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentUsers.length > 0 ? (
-                                currentUsers.map((user, index) => (
-                                    <tr key={user.id}>
-                                        <td className="fw-bold">{index + 1 + (currentPage - 1) * usersPerPage}</td>
-                                        <td>{user.name}</td>
-                                        <td><a href={`mailto:${user.email}`}>{user.email}</a></td>
-                                        <td className="text-capitalize">{user.role}</td>
-                                        <td><a href={`tel:${user.number}`}>{user.number || "N/A"}</a></td>
-                                        <td>
-                                            {user.file_upload ? (
-                                                <a
-                                                    href={`${import.meta.env.VITE_BACKEND_URL}/uploads/${user.file_upload}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    {user.file_upload}
-                                                </a>
-                                            ) : (
-                                                "No File"
-                                            )}
-                                        </td>
-                                        <td>{new Date(user.created_at).toISOString().split('T')[0]}</td>
-                                        <td><button><FaEdit /></button></td>
-                                        <td><button onClick={() => deleteUser(user.id)}><FaTrash /></button></td>
-                                    </tr>
-                                ))
-                            ) : (
+                    <div className="table-responsive">
+                        {/* Users Table */}
+                        <table className="table table-bordered table-bordered table-hover table-condensed">
+                            <thead>
                                 <tr>
-                                    <td colSpan="6">No users found.</td>
+                                    <th>ID</th>
+                                    <th onClick={() => sortUsers("name")} style={{ cursor: "pointer" }}>
+                                        Name {sortConfig.key === "name" ? (sortConfig.direction === "asc" ? <FaSortAlphaUp /> : <FaSortAlphaUpAlt />) : <CiFilter />}
+                                    </th>
+                                    <th onClick={() => sortUsers("email")} style={{ cursor: "pointer" }}>
+                                        Email {sortConfig.key === "email" ? (sortConfig.direction === "asc" ? <FaSortAlphaUp /> : <FaSortAlphaUpAlt />) : <CiFilter />}
+                                    </th>
+                                    <th onClick={() => sortUsers("role")} style={{ cursor: "pointer" }}>
+                                        Role {sortConfig.key === "role" ? (sortConfig.direction === "asc" ? <FaSortAlphaUp /> : <FaSortAlphaUpAlt />) : <CiFilter />}
+                                    </th>
+                                    <th onClick={() => sortUsers("number")} style={{ cursor: "pointer" }}>
+                                        Phone {sortConfig.key === "number" ? (sortConfig.direction === "asc" ? <FaSortAlphaUp /> : <FaSortAlphaUpAlt />) : <CiFilter />}
+                                    </th>
+                                    <th>File Upload</th>
+                                    <th onClick={() => sortUsers("created_at")} style={{ cursor: "pointer" }}>
+                                        Created {sortConfig.key === "created_at" ? (sortConfig.direction === "asc" ? <FaSortAlphaUp /> : <FaSortAlphaUpAlt />) : <CiFilter />}
+                                    </th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
-
+                            </thead>
+                            <tbody>
+                                {currentUsers.length > 0 ? (
+                                    currentUsers.map((user, index) => (
+                                        <tr key={user.id}>
+                                            <td className="fw-bold">{index + 1 + (currentPage - 1) * usersPerPage}</td>
+                                            <td>{user.name}</td>
+                                            <td><a href={`mailto:${user.email}`}>{user.email}</a></td>
+                                            <td className="text-capitalize">{user.role}</td>
+                                            <td><a href={`tel:${user.number}`}>{user.number || "N/A"}</a></td>
+                                            <td>
+                                                {user.file_upload ? (
+                                                    <a
+                                                        href={`${import.meta.env.VITE_FRONTEND_URL}/upload/${user.file_upload}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        {/* {user.file_upload} */}
+                                                        <img src={`${import.meta.env.VITE_FRONTEND_URL}/upload/${user.file_upload}`} alt={user.file_upload} width="50" height="50" />
+                                                    </a>
+                                                ) : (
+                                                    "No File"
+                                                )}
+                                            </td>
+                                            <td>{new Date(user.created_at).toISOString().split('T')[0]}</td>
+                                            <td>
+                                                <Link to={`update-user/${user.id}`}><button><FaEdit /></button></Link>
+                                            </td>
+                                            <td><button onClick={() => deleteUser(user.id)}><FaTrash /></button></td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="6">No users found.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                     {/* Pagination Controls */}
                     <div className="pagination">
                         <button
@@ -178,7 +182,6 @@ const Users = () => {
                 </div>
             )}
 
-            {/* Modal Popup */}
             <Modal
                 show={showPopup}
                 onHide={() => setShowPopup(false)}

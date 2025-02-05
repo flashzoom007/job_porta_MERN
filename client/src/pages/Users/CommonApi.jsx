@@ -1,4 +1,6 @@
 import { toast } from "react-toastify";
+import axios from "axios";
+let file = null;
 
 // Fetch Users API
 export const fetchUsers = async () => {
@@ -89,7 +91,7 @@ export const handleDelete = async (userId, users, filteredUsers, setUsers, setFi
 
     if (result.statusCode === 200) {
         toast.success(result.message);
-        
+
         // Remove the deleted user from both users and filteredUsers
         const updatedUsers = users.filter(user => user.id !== userId);
         setUsers(updatedUsers);
@@ -98,5 +100,49 @@ export const handleDelete = async (userId, users, filteredUsers, setUsers, setFi
         setFilteredUsers(updatedFilteredUsers);
     } else {
         toast.error(result.message);
+    }
+};
+
+// Function to handle file selection
+export const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+        if (!selectedFile.type.startsWith("image/")) {
+            toast.error("Only image files are allowed!");
+            e.target.value = "";
+            return;
+        }
+        file = selectedFile; // Set the selected file to the file variable
+        toast.success("File selected successfully.");
+    }
+};
+
+// Function to handle file upload
+export const handleUpload = async () => {
+    if (!file) {
+        // toast.error("Please select a file to upload.");
+        return null;
+    }
+
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const uploadApiUrl = `${import.meta.env.VITE_BACKEND_URL}/upload-file`;
+        const response = await axios.post(uploadApiUrl, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        if (response.data.statusCode === 200) {
+            toast.success("File uploaded successfully.");
+            return response.data.fileName;
+        } else {
+            toast.error(response.data.message);
+            return null;
+        }
+    } catch (error) {
+        toast.error("File upload failed.");
+        console.error("File upload error:", error);
+        return null;
     }
 };
