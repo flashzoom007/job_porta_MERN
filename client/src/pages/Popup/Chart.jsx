@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const Chart = ({ roleCounts }) => {
+const Chart = ({ roleCounts}) => {
     const [chartType, setChartType] = useState("bar");
 
     const [chartOptions, setChartOptions] = useState({
@@ -50,13 +50,13 @@ const Chart = ({ roleCounts }) => {
     const handleChartTypeChange = (event) => {
         const selectedType = event.target.value;
         setChartType(selectedType);
-    
+
         const total = roleCounts.admin + roleCounts.student + roleCounts.recruiter;
-    
+
         const adminPercentage = total ? parseFloat(((roleCounts.admin / total) * 100).toFixed(2)) : 0;
         const studentPercentage = total ? parseFloat(((roleCounts.student / total) * 100).toFixed(2)) : 0;
         const recruiterPercentage = total ? parseFloat(((roleCounts.recruiter / total) * 100).toFixed(2)) : 0;
-    
+
         setChartOptions((prevOptions) => ({
             ...prevOptions,
             chart: {
@@ -73,10 +73,17 @@ const Chart = ({ roleCounts }) => {
                         },
                     }
                     : {},
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function (val) {
+                            return `${val.toFixed(2)}%`;
+                        },
+                    },
         }));
-    
+        
         if (selectedType === "donut") {
             setChartSeries([adminPercentage, studentPercentage, recruiterPercentage]);
+            console.log('adminPercentage: ',adminPercentage, 'studentPercentage: ',studentPercentage, 'recruiterPercentage: ',recruiterPercentage)
         } else {
             setChartSeries([
                 {
@@ -86,7 +93,7 @@ const Chart = ({ roleCounts }) => {
             ]);
         }
     };
-    
+
     return (
         <div className="m-2">
             <div className="mb-3">

@@ -40,7 +40,7 @@ const Job = () => {
       const responseData = response.data;
       if (responseData.statusCode === 200) {
         toast.success(responseData.message);
-        navigate('/', { replace: true });
+        navigate('/login', { replace: true });
       } else if (responseData.statusCode === 400) {
         toast.error(responseData.message);
       } else {

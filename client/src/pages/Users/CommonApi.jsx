@@ -32,7 +32,7 @@ export const fetchUsers = async () => {
     }
 };
 
-// Delete User API
+// Delete Single User API
 export const deleteUser = async (userId) => {
     try {
         const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/delete/${userId}`;
@@ -51,6 +51,29 @@ export const deleteUser = async (userId) => {
         return { statusCode: 500, message: "Error deleting user" };
     }
 };
+
+// delete All users 
+export const deleteAll = async () => {
+    const isConfirmed = window.confirm("Are you sure you want to delete all users?");
+    if (!isConfirmed) {
+        return;
+    }
+    const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/delete-all-users`;
+    const response = await fetch(apiUrl, {
+        method: "DELETE",
+        "Content-Type": "application/json"
+    });
+
+    const data = await response.json();
+
+    if (data.statusCode === 200) {
+        toast.success(data.message);
+        return data.message;
+    } else {
+        toast.error(data.message);
+        return data.message;
+    }
+}
 
 // Filter Users by Role
 export const filterUsersByRole = (users, role, setFilteredUsers, setSelectedRole, setCurrentPage) => {

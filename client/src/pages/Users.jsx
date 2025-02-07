@@ -5,7 +5,7 @@ import { Modal, Button } from "react-bootstrap";
 import Chart from './Popup/Chart';
 import { CiFilter } from "react-icons/ci";
 import { FaSortAlphaUp, FaSortAlphaUpAlt, FaEdit, FaTrash } from "react-icons/fa";
-import { fetchUsers, filterUsersByRole, handleSort, handleDelete } from './Users/CommonApi';
+import { fetchUsers, filterUsersByRole, handleSort, handleDelete, deleteAll } from './Users/CommonApi';
 import { Link } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa6";
 
@@ -63,7 +63,7 @@ const Users = () => {
         await handleDelete(userId, users, filteredUsers, setUsers, setFilteredUsers);
     };
 
-    // Logic for pagination
+        // Logic for pagination
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
@@ -95,9 +95,14 @@ const Users = () => {
                             Show Popup
                         </button>
 
-                        <Link to='/job' className="text-decoration-none w-25 text-end">
-                            <button className="btn btn-outline-primary link-hover">Add User <FaAngleRight /></button>
-                        </Link>
+                        <div className="w-25 d-flex justify-content-between">
+                            <Link to='/job' className="text-decoration-none">
+                                <button className="btn btn-outline-primary link-hover">Add User <FaAngleRight /></button>
+                            </Link>
+                            <Link to='/users' className="text-decoration-none" onClick={deleteAll}>
+                                <button className="btn btn-outline-danger link-hover">Delete All <FaTrash /></button>
+                            </Link>
+                        </div>
 
                     </div>
                     <div className="table-responsive">
@@ -151,9 +156,9 @@ const Users = () => {
                                             </td>
                                             <td>{new Date(user.created_at).toISOString().split('T')[0]}</td>
                                             <td>
-                                                <Link to={`update-user/${user.id}`}><button><FaEdit /></button></Link>
+                                                <Link to={`update-user/${user.id}`}><button className="btn btn-outline-primary"><FaEdit /></button></Link>
                                             </td>
-                                            <td><button onClick={() => deleteUser(user.id)}><FaTrash /></button></td>
+                                            <td><button className="btn btn-outline-danger" onClick={() => deleteUser(user.id)}><FaTrash /></button></td>
                                         </tr>
                                     ))
                                 ) : (

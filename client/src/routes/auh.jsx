@@ -7,6 +7,7 @@ import Users from "../pages/Users";
 import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";
 import UpdateUser from "../pages/Users/UpdateUser";
+import Chart from "../pages/Chart";
 
 const Index = () => {
   return (
@@ -18,6 +19,7 @@ const Index = () => {
           <Route path="/users/update-user/:id" element={<UpdateUser /> } /> 
           <Route path="/contact" element={<Contact />} /> 
           <Route path="/login" element={<Login />} /> 
+          <Route path="/chart" element={<Chart />} /> 
           <Route path="*" element={<Error />} /> 
         </Routes>
     </>

@@ -1,53 +1,52 @@
 const conn = require('../utils/db');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const multer = require("multer");
 const path = require("path");
 const logger = require("../utils/logger");
+const multer = require("multer");
 
-
-// Login/ Sign Up
+// Login
 const Login = async (req, res) => {
     try {
+
         const { email, password, role } = req.body;
         if (!email || !password || !role) {
             return res.json({ message: "Missing required fields", statusCode: 400 });
         }
 
-        const query = 'SELECT * FROM `users` WHERE `email` = ? AND `password` = ? AND `role` = ?;'
-        conn.query(query, [email, password, role], (err, results) => {
-            if (err) {
-                return res.json({ message: "Database query error", details: err, statusCode: 500 });
-            }
+        const query = 'SELECT * FROM `users` WHERE `email` = ? AND `role` = ?;'
 
-            if (results.length > 0) {
-                // return res.json({ message: "Login successful", user: results[0], statusCode: 200 });
-                const user = results[0];
+        const [results] = await conn.promise().query(query, [email, role]);
+        if (results.length <= 0) {
+            return res.json({ message: "Invalid credentials", statusCode: 401 });
+        }
+        const user = results[0];
 
-                // Generate JWT Token
-                const token = jwt.sign(
-                    { id: user.id, email: user.email, role: user.role },
-                    process.env.JWT_SECRET,
-                    { expiresIn: "1h" }  // Token expires in 1 hour
-                );
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.json({ message: "Invalid credentials", statusCode: 401 });
+        }
 
-                return res.json({
-                    message: "Login successful",
-                    user: user,
-                    token: token,
-                    statusCode: 200,
-                });
-            } else {
-                return res.json({ message: "Invalid credentials", statusCode: 401 });
-            }
+        const token = jwt.sign(
+            { id: user.id, email: user.email, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }  // Token expires in 1 hour
+        );
+
+        return res.json({
+            message: "Login successful",
+            user: user,
+            token: token,
+            statusCode: 200,
         });
+
     }
     catch (err) {
         res.json({ message: 'Internal server error on login user', statusCode: 500 });
     }
 }
 
-// Create a new user
+// Create a new user/ Sign Up
 const userCreate = async (req, res) => {
     try {
         const { name, email, password, role, number, file_upload } = req.body;
@@ -61,8 +60,10 @@ const userCreate = async (req, res) => {
             return res.json({ message: "Email already exists, use another email", statusCode: 400 });
         }
 
+        const hashPassword = await bcrypt.hash(password, 10);
+
         const query = `INSERT INTO users (name, email, password, role, number, file_upload) VALUES (?, ?, ?, ?, ?, ?)`;
-        const values = [name, email, password, role, number, file_upload];
+        const values = [name, email, hashPassword, role, number, file_upload];
         const [result] = await conn.promise().query(query, values);
 
         res.json({ message: "User created successfully", userId: result.insertId, statusCode: 200 });
@@ -91,6 +92,19 @@ const deleteUser = async (req, res) => {
 
     } catch (err) {
         res.json({ message: 'Internal server error on delete user', statusCode: 500 });
+    }
+}
+
+// Delete All Users
+const deleteAllUsers = async (req, res) => {
+    try {
+        const query = `DELETE FROM users WHERE 1`;
+        conn.query(query, (err, result) =>{
+            res.json({ message: 'All Users are deleted successfully', statusCode: 200 });
+        })
+        
+    } catch (err) {
+        console.log('Errro while delete all users', err)
     }
 }
 
@@ -191,5 +205,5 @@ const logLogin = (req, res) => {
 };
 
 module.exports = {
-    userCreate, showUsers, Login, deleteUser, updateUser, updateShowUser, uploadFile, logLogin
+    userCreate, showUsers, Login, deleteUser, updateUser, updateShowUser, uploadFile, logLogin, deleteAllUsers
 };

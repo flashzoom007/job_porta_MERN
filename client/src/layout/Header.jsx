@@ -30,7 +30,7 @@ const Header = () => {
                         <Link to="/">Home</Link>
                         {isauthenticated && userRole === "admin" && <Link to="/users">All Uses</Link>}
                         <Link to="/job">Register</Link>
-                        <Link to="/service">Service</Link>
+                        <Link to="/chart">Charts</Link>
                         <Link to="/contact">Contact</Link>
                     </nav>
 
