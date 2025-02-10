@@ -31,6 +31,7 @@ const Header = () => {
                         {isauthenticated && userRole === "admin" && <Link to="/users">All Uses</Link>}
                         <Link to="/job">Register</Link>
                         <Link to="/chart">Charts</Link>
+                        <Link to="/job-create">Job Create</Link>
                         <Link to="/contact">Contact</Link>
                     </nav>
 

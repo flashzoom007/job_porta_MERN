@@ -1,0 +1,14 @@
+/********* Basic Details Start **********/
+
+.row {
+    display: flex;
+    /* gap: 1rem; */
+    margin: 1rem 0 ;
+}
+label {
+    margin-bottom: 0.5rem;
+}
+.form-content{
+    min-height: 65vh;    
+}
+/********* Basic Details End **********/

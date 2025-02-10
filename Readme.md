@@ -82,3 +82,5 @@ Update versions:
 [1.8] = in log file user name show
 
 [1.9] =  Add deleteAll users, new chart display
+
+[2.0] =  add new job role, front ned half create(db and backend reaming)

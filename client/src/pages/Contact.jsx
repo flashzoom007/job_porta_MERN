@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from 'react-hook-form';
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { InputMask } from "primereact/inputmask";
 
 function Contact() {
 
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors, isSubmitting },
     } = useForm();
 
@@ -39,7 +38,7 @@ function Contact() {
                         <div className='main-section'>
                             <label>Number: </label>
                             <div>
-                                <input
+                                {/* <input
                                     type="number"
                                     {...register("number", {
                                         required: true,
@@ -51,7 +50,9 @@ function Contact() {
                                             value: 13,
                                             message: 'Phone Number max 13 digits long'
                                         }
-                                    })} />
+                                    })} /> */}
+                                    <InputMask id="ssn" mask="999-99-9999" placeholder="999-99-9999"></InputMask>
+
                                 {errors.number && <span className={errors.message ? '' : 'text-danger'}>{errors.number.message}</span>}
                             </div>
                         </div>

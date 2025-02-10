@@ -8,6 +8,8 @@ import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";
 import UpdateUser from "../pages/Users/UpdateUser";
 import Chart from "../pages/Chart";
+import Test from "../pages/Test";
+import JobCreate from "../pages/JobCreate";
 
 const Index = () => {
   return (
@@ -20,6 +22,8 @@ const Index = () => {
           <Route path="/contact" element={<Contact />} /> 
           <Route path="/login" element={<Login />} /> 
           <Route path="/chart" element={<Chart />} /> 
+          <Route path="/test" element={<Test />} /> 
+          <Route path="/job-create" element={<JobCreate />} /> 
           <Route path="*" element={<Error />} /> 
         </Routes>
     </>
