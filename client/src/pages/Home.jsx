@@ -1,63 +1,51 @@
-import React, { Component } from "react";
-import ReactApexChart from "react-apexcharts";
+import React, { useState } from "react";
+import axios from "axios";
+
 
 const Home = () => {
-  const [state, setState] = React.useState({
-    
-      series: [{
-        name: 'Series 1',
-        data: [80, 50, 30, 40, 100, 20],
-      }, {
-        name: 'Series 2',
-        data: [20, 30, 40, 80, 20, 80],
-      }, {
-        name: 'Series 3',
-        data: [44, 76, 78, 13, 43, 10],
-      }],
-      options: {
-        chart: {
-          height: 350,
-          type: 'radar',
-          dropShadow: {
-            enabled: true,
-            blur: 1,
-            left: 1,
-            top: 1
-          }
-        },
-        title: {
-          // text: 'Radar Chart - Multi Series'
-        },
-        stroke: {
-          width: 2
-        },
-        fill: {
-          opacity: 0.1
-        },
-        markers: {
-          size: 0
-        },
-        yaxis: {
-          stepSize: 20
-        },
-        xaxis: {
-          categories: ['2011', '2012', '2013', '2014', '2015', '2016']
-        }
-      },
-    
-    
-  });
+  const [playlistUrl, setPlaylistUrl] = useState("");
+  const [status, setStatus] = useState("");
 
-  
+  const handleDownload = async () => {
+    if (!playlistUrl) {
+      setStatus("❌ Please enter a playlist URL!");
+      return;
+    }
+
+    setStatus("⏳ Downloading... Please wait!");
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/playlist-download`, {
+        playlistUrl,
+      });
+
+      if (response.data.message) {
+        setStatus(`✅ Download complete! Total Videos: ${response.data.totalVideos}`);
+      } else {
+        setStatus(`❌ Error: ${response.data.error}`);
+      }
+    } catch (error) {
+      setStatus("❌ Failed to download videos!");
+    }
+  };
 
   return (
     <div>
-      <div id="chart">
-          <ReactApexChart options={state.options} series={state.series} type="radar" height={350} />
-        </div>
-      <div id="html-dist"></div>
+      <input
+        type="text"
+        placeholder="Enter YouTube Playlist URL"
+        value={playlistUrl}
+        onChange={(e) => setPlaylistUrl(e.target.value)}
+        style={{ padding: "10px", width: "300px", fontSize: "16px" }}
+      />
+      <br />
+      <button className="btn btn-outline-primary"
+        onClick={handleDownload}>
+        Download
+      </button>
+      <p>{status}</p>
     </div>
   );
-}
+};
 
 export default Home;

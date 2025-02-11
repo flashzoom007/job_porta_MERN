@@ -38,7 +38,7 @@ function Contact() {
                         <div className='main-section'>
                             <label>Number: </label>
                             <div>
-                                {/* <input
+                                <input
                                     type="number"
                                     {...register("number", {
                                         required: true,
@@ -50,8 +50,8 @@ function Contact() {
                                             value: 13,
                                             message: 'Phone Number max 13 digits long'
                                         }
-                                    })} /> */}
-                                    <InputMask id="ssn" mask="999-99-9999" placeholder="999-99-9999"></InputMask>
+                                    })} />
+                                    {/* <InputMask id="ssn" mask="999-99-9999" placeholder="999-99-9999"></InputMask> */}
 
                                 {errors.number && <span className={errors.message ? '' : 'text-danger'}>{errors.number.message}</span>}
                             </div>

@@ -63,24 +63,16 @@ backend
     Nodemon server.js
 
 Update versions:
+
 [1.0] = Initial code
-
 [1.1] = Add user create, delete, update, show, login, signup
-
 [1.2] = Add image upload
-
 [1.3] = Add log file
-
 [1.4] = Add JWT token
-
 [1.5] = Add bcryptjs for password hashing
-
 [1.6] = Add multer for image upload
-
 [1.7] = Add logger for log file
-
 [1.8] = in log file user name show
-
 [1.9] =  Add deleteAll users, new chart display
-
 [2.0] =  add new job role, front ned half create(db and backend reaming)
+[2.1] =  add new database, with also download the youtube playlist video

@@ -7,16 +7,11 @@ export const fetchUsers = async () => {
     try {
         const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/show-users`;
         const response = await fetch(apiUrl, {
-            method: "POST",
+            method: "GET",
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                mapper: {
-                    cols: ["id", "name", "email", "role", "number", "file_upload"],
-                },
-            }),
         });
 
         const data = await response.json();

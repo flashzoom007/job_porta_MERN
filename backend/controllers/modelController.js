@@ -5,6 +5,37 @@ const path = require("path");
 const logger = require("../utils/logger");
 const multer = require("multer");
 
+// Display All company
+const getAllRecords = async (req, res) => {
+    try {
+        const tableName = req.params.table;
+        const validTables = [
+            'company', 
+            'positions_desc', 
+            'company_profile', 
+            'job_open_list', 
+            'users', 
+            'job_apply_list'
+        ];
+
+        if(!validTables.includes(tableName)) {
+            return res.json({ message: 'Invalid table name', statusCode: 500 });
+        }
+
+        // const query = 'SELECT * FROM `company` WHERE 1;';
+
+        const query = `SELECT * FROM \`${tableName}\` WHERE 1;`;
+        conn.query(query, (err, results) => {
+            if (err) {
+                return res.statusCode(500).json({ message: 'Internal server error' });
+            }
+            res.json({ users: results, statusCode: 200 });
+        });
+    } catch (error) {
+        res.json({ message: 'Internal server error on getAllRecords', statusCode: 500 });
+    }
+}
+
 // Login
 const Login = async (req, res) => {
     try {
@@ -131,21 +162,6 @@ const updateUser = async (req, res) => {
     }
 };
 
-// Display all users
-const showUsers = async (req, res) => {
-    try {
-        const query = 'SELECT * FROM `users` WHERE 1;';
-        conn.query(query, (err, results) => {
-            if (err) {
-                return res.statusCode(500).json({ message: 'Internal server error' });
-            }
-            res.json({ users: results, statusCode: 200 });
-        });
-    } catch (error) {
-        res.json({ message: 'Internal server error on show user', statusCode: 500 });
-    }
-}
-
 // For update show User 
 const updateShowUser = async (req, res) => {
     const { id } = req.query;
@@ -205,5 +221,5 @@ const logLogin = (req, res) => {
 };
 
 module.exports = {
-    userCreate, showUsers, Login, deleteUser, updateUser, updateShowUser, uploadFile, logLogin, deleteAllUsers
+    getAllRecords, userCreate, Login, deleteUser, updateUser, updateShowUser, uploadFile, logLogin, deleteAllUsers
 };
