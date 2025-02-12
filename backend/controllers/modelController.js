@@ -10,15 +10,15 @@ const getAllRecords = async (req, res) => {
     try {
         const tableName = req.params.table;
         const validTables = [
-            'company', 
-            'positions_desc', 
-            'company_profile', 
-            'job_open_list', 
-            'users', 
+            'company',
+            'positions_desc',
+            'company_profile',
+            'job_open_list',
+            'users',
             'job_apply_list'
         ];
 
-        if(!validTables.includes(tableName)) {
+        if (!validTables.includes(tableName)) {
             return res.json({ message: 'Invalid table name', statusCode: 500 });
         }
 
@@ -130,10 +130,10 @@ const deleteUser = async (req, res) => {
 const deleteAllUsers = async (req, res) => {
     try {
         const query = `DELETE FROM users WHERE 1`;
-        conn.query(query, (err, result) =>{
+        conn.query(query, (err, result) => {
             res.json({ message: 'All Users are deleted successfully', statusCode: 200 });
         })
-        
+
     } catch (err) {
         console.log('Errro while delete all users', err)
     }
@@ -142,15 +142,16 @@ const deleteAllUsers = async (req, res) => {
 // Update new user   
 const updateUser = async (req, res) => {
     try {
-        const { id, fullname, password, role, number, file_upload } = req.body;
-        const name = fullname;
+        const { id, name, password, role, file_upload, number, created_at } = req.body;
+
         if (!id) {
             return res.status(400).json({ message: "User ID is required", status: 400 });
         }
-        const query = `UPDATE users SET name=?,password=?,role=?,file_upload=?,number=? WHERE id = ?`;
 
-        const value = [name, password, role, file_upload, number, id];
-        const [result] = await conn.promise().query(query, value);
+        const query = `UPDATE users SET name=?, password=?, role=?, file_upload=?, number=?, created_at=? WHERE id = ?`;
+        const values = [name, password, role, file_upload, number, created_at, id];
+
+        const [result] = await conn.promise().query(query, values);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "User not found", status: 404 });
@@ -158,9 +159,10 @@ const updateUser = async (req, res) => {
 
         res.json({ message: "User updated successfully", status: 200 });
     } catch (error) {
-        res.json({ message: "Internal server error on create user", statusCode: 500 });
+        res.status(500).json({ message: "Internal server error on update user", statusCode: 500, error: error });
     }
 };
+
 
 // For update show User 
 const updateShowUser = async (req, res) => {

@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const youtubedl = require('youtube-dl-exec');
 const fs = require('fs');
 const path = require('path');
+const { exec } = require('child_process');
 
 // Function to clean filenames (remove invalid characters)
 function sanitizeFilename(name) {
@@ -42,26 +43,28 @@ async function getPlaylistVideos(playlistUrl) {
     return videos;
 }
 
-// Function to download a single video
-async function downloadVideo(video, index, totalVideos, downloadFolder) {
+// Function to download & merge video+audio in 720p+
+async function downloadAndMerge(video, index, totalVideos, downloadFolder) {
     const videoTitle = sanitizeFilename(video.title);
-    const filePath = path.join(downloadFolder, `${index + 1}. ${videoTitle}.mp4`);
+    const finalPath = path.join(downloadFolder, `${index + 1}. ${videoTitle}.mp4`);
 
-    console.log(`\n📥 (${index + 1}/${totalVideos}) Downloading: ${video.title}...`);
+    console.log(`\n📥 (${index + 1}/${totalVideos}) Downloading Video + Audio in 720p+...`);
 
     try {
         await youtubedl(video.url, {
-            output: filePath,
-            format: 'best[ext=mp4]', // Ensures video + audio in one file
+            output: finalPath,
+            format: 'bestvideo[height>=720]+bestaudio/best',
+            mergeOutputFormat: 'mp4', // Ensures merged output
         });
 
-        console.log(`✅ (${index + 1}/${totalVideos}) Downloaded: ${videoTitle}.mp4`);
+        console.log(`✅ (${index + 1}/${totalVideos}) Downloaded & Merged: ${videoTitle}.mp4`);
+
     } catch (error) {
         console.error(`❌ Error downloading: ${video.title}`, error);
     }
 }
 
-// Function to process the playlist
+// Function to process the playlist API request
 async function processPlaylist(req, res) {
     const { playlistUrl } = req.body;
     if (!playlistUrl) return res.status(400).json({ error: 'Playlist URL is required' });
@@ -80,10 +83,10 @@ async function processPlaylist(req, res) {
         console.log(`🚀 Starting downloads... Total Videos: ${videos.length}\n`);
 
         for (let i = 0; i < videos.length; i++) {
-            await downloadVideo(videos[i], i, videos.length, downloadFolder);
+            await downloadAndMerge(videos[i], i, videos.length, downloadFolder);
         }
 
-        console.log('\n🎉 All videos downloaded successfully!');
+        console.log('\n🎉 All videos downloaded & merged successfully!');
         res.json({ message: 'Download completed successfully!', totalVideos: videos.length });
     } catch (error) {
         console.error('❌ Error processing request:', error);

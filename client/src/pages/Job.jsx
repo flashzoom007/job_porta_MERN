@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/style.css'
 import { useState } from 'react';
-import { handleFileChange, handleUpload } from "./Users/CommonApi";
+import { handleFileChange, handleUpload } from "./Apis/CommonApi";
 import { FaAngleLeft } from "react-icons/fa";
 
 

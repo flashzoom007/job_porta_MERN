@@ -31,7 +31,7 @@ const Login = () => {
                     'Content-Type': 'application/json',
                 }, body: JSON.stringify({ email, password, role }),
             });
-            console.log("formData", formData);
+      
             const responseData = response.data;
             console.log("responseData", responseData);
 

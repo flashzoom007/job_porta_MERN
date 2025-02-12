@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const isauthenticated = localStorage.getItem("userToken");
     const userRole = localStorage.getItem("userRole");
@@ -31,6 +33,22 @@ const Header = () => {
                         {isauthenticated && userRole === "admin" && <Link to="/users">All Uses</Link>}
                         <Link to="/job">Register</Link>
                         <Link to="/chart">Charts</Link>
+                        <div className="nav-item dropdown">
+                            <button
+                                className="nav-link dropdown-toggle btn btn-light"
+                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            >
+                                Unknown
+                            </button>
+                            {isDropdownOpen && (
+                                <ul className="dropdown-menu show position-absolute">
+                                    <li><Link to="/youtube-playlist" className="dropdown-item">Youtube Playlist Download</Link></li>
+                                    <li><Link to="/company-name" className="dropdown-item">Company Name</Link></li>
+                                    {/* <li><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" className="dropdown-item">YouTube</a></li>
+                                    <li><Link to="/blog" className="dropdown-item">Blog</Link></li> */}
+                                </ul>
+                            )}
+                        </div>
                         <Link to="/job-create">Job Create</Link>
                         <Link to="/contact">Contact</Link>
                     </nav>
@@ -48,11 +66,8 @@ const Header = () => {
                             </svg>
                         </button>
                     </Link>
-
                 </div>
             </header>
-
-
         </>
     )
 }

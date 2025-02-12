@@ -47,7 +47,7 @@ const UpdateUser = () => {
         try {
             const formData = new FormData();
             formData.append("id", id);
-            formData.append("fullname", data.fullname);
+            formData.append("name", data.fullname);
             formData.append("password", data.password);
             formData.append("role", data.role);
             formData.append("number", data.number);

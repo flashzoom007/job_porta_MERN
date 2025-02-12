@@ -6,10 +6,11 @@ import Job from "../pages/Job";
 import Users from "../pages/Users";
 import Login from "../pages/Login";
 import PrivateRoute from "../components/PrivateRoute";
-import UpdateUser from "../pages/Users/UpdateUser";
+import UpdateUser from "../pages/Apis/UpdateUser";
 import Chart from "../pages/Chart";
-import Test from "../pages/Test";
 import JobCreate from "../pages/JobCreate";
+import YoutubePlaylist from "../pages/RandomPages/YoutubePlaylist";
+import CompanyName from "../pages/Company/Name";
 
 const Index = () => {
   return (
@@ -22,8 +23,9 @@ const Index = () => {
           <Route path="/contact" element={<Contact />} /> 
           <Route path="/login" element={<Login />} /> 
           <Route path="/chart" element={<Chart />} /> 
-          <Route path="/test" element={<Test />} /> 
           <Route path="/job-create" element={<JobCreate />} /> 
+          <Route path="/youtube-playlist" element={<YoutubePlaylist />} /> 
+          <Route path="/company-name" element={<CompanyName />} /> 
           <Route path="*" element={<Error />} /> 
         </Routes>
     </>

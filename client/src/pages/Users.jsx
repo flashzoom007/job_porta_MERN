@@ -5,7 +5,7 @@ import { Modal, Button } from "react-bootstrap";
 import Chart from './Popup/Chart';
 import { CiFilter } from "react-icons/ci";
 import { FaSortAlphaUp, FaSortAlphaUpAlt, FaEdit, FaTrash } from "react-icons/fa";
-import { fetchUsers, filterUsersByRole, handleSort, handleDelete, deleteAll } from './Users/CommonApi';
+import { fetchUsers, filterUsersByRole, handleSort, handleDelete, deleteAll } from './Apis/CommonApi';
 import { Link } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa6";
 
