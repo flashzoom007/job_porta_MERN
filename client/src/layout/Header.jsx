@@ -70,6 +70,7 @@ const Header = () => {
                                 <ul className="dropdown-menu show position-absolute">
                                     <li><Link to="/company-name" className="dropdown-item">All Company</Link></li>
                                     <li><Link to="/company-Profile" className="dropdown-item">Company Profile</Link></li>
+                                    <li><Link to="/job-position" className="dropdown-item">Job Positions</Link></li>
                                 </ul>
                             )}
                         </div>

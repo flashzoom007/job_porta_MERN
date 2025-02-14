@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2025 at 10:49 AM
+-- Generation Time: Feb 14, 2025 at 10:21 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -38,10 +38,10 @@ CREATE TABLE `company` (
 
 INSERT INTO `company` (`id`, `name`) VALUES
 (3, 'Amazon'),
-(5, 'Apple'),
-(4, 'Facebook'),
-(1, 'Google'),
-(2, 'Microsoft');
+(68, 'FlipKart'),
+(70, 'GoDaddy'),
+(67, 'Google'),
+(71, 'Hostinger');
 
 -- --------------------------------------------------------
 
@@ -62,11 +62,10 @@ CREATE TABLE `company_profile` (
 --
 
 INSERT INTO `company_profile` (`id`, `name`, `description`, `url`, `image`) VALUES
-(1, 'Google', 'A leading technology company', 'https://google.com', 'https://logo.google.com'),
-(2, 'Microsoft', 'A software giant', 'https://microsoft.com', 'https://logo.microsoft.com'),
-(3, 'Amazon', 'E-commerce and cloud services', 'https://amazon.com', 'https://logo.amazon.com'),
-(4, 'Facebook', 'Social media and advertising', 'https://facebook.com', 'https://logo.facebook.com'),
-(5, 'Apple', 'Innovative hardware and software', 'https://apple.com', 'https://logo.apple.com');
+(1, 'Amazon', 'Leading provider of innovative widgets and gadgets.', 'https://www.amazone.com', '1739514874695-01cada77a0a7d326d85b7969fe26a728.jpg'),
+(2, 'FlipKart', 'Specializing in cutting-edge technology solutions for the modern enterprise.', 'https://www.flipkart.com/', '1739523950617-hd-flipkart-round-logo-icon-transparent-png-701751694966204grvmunpzzf.png'),
+(6, 'Google', 'WWW company\n', 'www.google.com', '1739514719344-Google__G__logo.svg.png'),
+(13, 'GoDaddy', 'NA', 'https://www.godaddy.com/', '1739514949926-godaddy-v2-icon-2048x2048-fnx09smt.png');
 
 -- --------------------------------------------------------
 
@@ -89,11 +88,7 @@ CREATE TABLE `job_apply_list` (
 --
 
 INSERT INTO `job_apply_list` (`id`, `company_name`, `user_name`, `position_name`, `apply_date`, `resume`, `created_at`) VALUES
-(1, 'Google', 'John Doe', 'Software Engineer', '2025-02-06', 'resume_john.pdf', '2025-02-11 06:48:47'),
-(2, 'Microsoft', 'Jane Smith', 'Data Scientist', '2025-02-07', 'resume_jane.pdf', '2025-02-11 06:48:47'),
-(3, 'Amazon', 'Mike Johnson', 'Cloud Architect', '2025-02-08', 'resume_mike.pdf', '2025-02-11 06:48:47'),
-(4, 'Facebook', 'Alice Brown', 'UX Designer', '2025-02-09', 'resume_alice.pdf', '2025-02-11 06:48:47'),
-(5, 'Apple', 'Bob Martin', 'Product Manager', '2025-02-10', 'resume_bob.pdf', '2025-02-11 06:48:47');
+(3, 'Amazon', 'Mike Johnson', 'Cloud Architect', '2025-02-08', 'resume_mike.pdf', '2025-02-11 06:48:47');
 
 -- --------------------------------------------------------
 
@@ -114,11 +109,34 @@ CREATE TABLE `job_open_list` (
 --
 
 INSERT INTO `job_open_list` (`id`, `company_name`, `position_desc`, `position_skills`, `position_open_date`) VALUES
-(1, 'Google', 'Develop scalable web applications', 'JavaScript, React, Node.js', '2025-02-01'),
-(2, 'Microsoft', 'Build AI solutions', 'Python, Machine Learning, AI', '2025-02-02'),
-(3, 'Amazon', 'Manage cloud infrastructure', 'AWS, DevOps, Linux', '2025-02-03'),
-(4, 'Facebook', 'Design user experiences', 'Figma, UX Research, UI Design', '2025-02-04'),
-(5, 'Apple', 'Lead product innovation', 'Product Management, Agile, Strategy', '2025-02-05');
+(3, 'Amazon', 'Manage cloud infrastructure', 'AWS, DevOps, Linux', '2025-02-03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_position`
+--
+
+CREATE TABLE `job_position` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `job_position`
+--
+
+INSERT INTO `job_position` (`id`, `name`, `created`) VALUES
+(1, 'Software Engineer', '2025-02-14 12:50:46'),
+(2, 'Data Analyst', '2025-02-14 12:50:46'),
+(3, 'Product Manager', '2025-02-14 12:50:46'),
+(4, 'UI/UX Designer', '2025-02-14 12:50:46'),
+(5, 'DevOps Engineer', '2025-02-14 12:50:46'),
+(6, 'Cybersecurity Specialist', '2025-02-14 12:50:46'),
+(7, 'Marketing Manager', '2025-02-14 12:50:46'),
+(8, 'HR Executive', '2025-02-14 12:50:46'),
+(9, 'Finance Analyst', '2025-02-14 12:50:46');
 
 -- --------------------------------------------------------
 
@@ -165,12 +183,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `file_upload`, `number`, `created_at`) VALUES
-(1, 'John Doe', 'john@example.com', 'password123', 'student', '1739256677675-looties.png', '1234567890', '2025-02-11 06:48:47'),
-(2, 'Jane Smith', 'jane@example.com', 'password456', 'recruiter', '1739256695458-looties.png', '0987654321', '2025-02-11 06:48:47'),
-(3, 'Mike Johnson', 'mike@example.com', 'password789', 'recruiter', '1739258659183-right-arrow.png', '5678901234', '2025-02-11 06:48:47'),
-(4, 'Alice Brown', 'alice@example.com', 'passwordabc', 'student', '1739256682927-looties.png', '6789012345', '2025-02-11 06:48:47'),
-(5, 'Bob Martin', 'bob@example.com', 'passwordxyz', 'student', '1739256686659-looties.png', '7890123456', '2025-02-11 06:48:47'),
-(6, 'harsh', 'harsh@gmail.com', '$2a$10$Z3/7TbOMH.2ngO/o01xAiO3YSmEaM.HYwkG0MrDn3FGkt.uLTLYny', 'admin', '1739256578537-looties.png', '1234567890', '2025-02-11 06:49:38');
+(2, 'Jane Smith', 'jane@example.com', 'password456', 'recruiter', '1739512097462-01.jpg', '0987654321', '2025-02-14 05:48:17'),
+(3, 'Mike Johnson', 'mike@example.com', 'password789', 'recruiter', '1739512100698-01.jpg', '5678901234', '2025-02-14 05:48:20'),
+(4, 'Alice Brown', 'alice@example.com', 'passwordabc', 'student', '1739512109900-04.jpg', '6789012345', '2025-02-14 05:48:29'),
+(5, 'Bob Martin', 'bob@example.com', 'bob@example.com', 'recruiter', '1739512117057-1738918870609-04.jpg', '7890123456', '2025-02-14 05:48:37'),
+(6, 'harsh', 'harsh@gmail.com', '$2a$10$Z3/7TbOMH.2ngO/o01xAiO3YSmEaM.HYwkG0MrDn3FGkt.uLTLYny', 'admin', '1739512124922-04.jpg', '1234567890', '2025-02-14 05:48:44'),
+(8, 'condescending jemison 123', 'condescendingjemison1@tomorjerry.com', '$2a$10$hjZKtIdjxuVl97dl33Gtu.Z3CsEEOSp7yFciWQ5m5lCx/9CWEthF2', 'admin', '1739512131736-03.jpg', '1234567890', '2025-02-14 05:48:51');
 
 --
 -- Indexes for dumped tables
@@ -207,6 +225,12 @@ ALTER TABLE `job_open_list`
   ADD KEY `fk_job_open_company` (`company_name`);
 
 --
+-- Indexes for table `job_position`
+--
+ALTER TABLE `job_position`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `positions_desc`
 --
 ALTER TABLE `positions_desc`
@@ -229,13 +253,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `company_profile`
 --
 ALTER TABLE `company_profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `job_apply_list`
@@ -250,6 +274,12 @@ ALTER TABLE `job_open_list`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `job_position`
+--
+ALTER TABLE `job_position`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `positions_desc`
 --
 ALTER TABLE `positions_desc`
@@ -259,7 +289,7 @@ ALTER TABLE `positions_desc`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -269,7 +299,7 @@ ALTER TABLE `users`
 -- Constraints for table `company_profile`
 --
 ALTER TABLE `company_profile`
-  ADD CONSTRAINT `fk_company_profile_name` FOREIGN KEY (`name`) REFERENCES `company` (`name`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_company_profile_name` FOREIGN KEY (`name`) REFERENCES `company` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `job_apply_list`

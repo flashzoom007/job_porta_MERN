@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { getAllCompany, deleteCompany } from '../Apis/CommonApi';
+import { getAllJobPosition, deleteJobPosition } from '../Apis/CommonApi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { IoIosCreate } from "react-icons/io";
 
-const Name = () => {
+const JobPosition = () => {
     const navigate = useNavigate();
     const [companyShow, setCompanyShow] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -17,15 +16,14 @@ const Name = () => {
 
     const handleRefresh = () => {
         setRefresh(prev => !prev);
-        navigate(0); 
+        navigate(0);
     };
 
     const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
 
     useEffect(() => {
-        getAllCompany(setCompanyShow, setShowModal);
-        getAllCompany((data)=>{
-            console.log(data)
+        getAllJobPosition(setCompanyShow, setShowModal);
+        getAllJobPosition((data) => {
         })
     }, [refresh]);
 
@@ -38,7 +36,6 @@ const Name = () => {
                 apiUrl = `${import.meta.env.VITE_BACKEND_URL}/update-company`;
                 payload.id = selectedCompany.id;
             }
-            console.log('apiUrl', apiUrl);
             const response = await axios.post(apiUrl, payload, {
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -46,10 +43,10 @@ const Name = () => {
             if (response.data.statusCode === 200) {
                 toast.success(response.data.message);
                 closeModal();
-                handleRefresh(); 
-            } else if(response.data.statusCode === 100){
+                handleRefresh();
+            } else if (response.data.statusCode === 100) {
                 toast.info(response.data.error);
-            }else {
+            } else {
                 toast.error(response.data.message);
             }
         } catch (error) {
@@ -64,13 +61,13 @@ const Name = () => {
         setValue('name', company.name);
     };
 
-    const handleDelete = async (companyId) => {
+    const handleDelete = async (PositionId) => {
         try {
-            await deleteCompany(companyId);
-            toast.success("Company deleted successfully.");
+            await deleteJobPosition(PositionId);
+            toast.success("Position deleted successfully.");
             handleRefresh();
         } catch (error) {
-            toast.error("Failed to delete company.");
+            toast.error("Failed to delete Job Profile.");
         }
     };
 
@@ -130,8 +127,8 @@ const Name = () => {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
-                            <th>Create Job</th>
+                            <th>Position Name</th>
+                            <th>Created At</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -141,7 +138,7 @@ const Name = () => {
                             <tr key={company.id}>
                                 <td>{index + 1}</td>
                                 <td>{company.name}</td>
-                                <td><button className="btn btn-outline-info"><IoIosCreate /></button></td>
+                                <td>{company.created}</td>
                                 <td> <button className="btn btn-outline-primary" onClick={() => handleEdit(company)}> <FaEdit /> </button> </td>
                                 <td> <button className="btn btn-outline-danger" onClick={() => handleDelete(company.id)} > <FaTrash /> </button> </td>
                             </tr>
@@ -153,4 +150,4 @@ const Name = () => {
     );
 };
 
-export default Name;  
+export default JobPosition;  

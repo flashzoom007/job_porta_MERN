@@ -3,6 +3,7 @@ import axios from "axios";
 let file = null;
 import { useNavigate } from 'react-router-dom';
 
+//! Users Start
 // Fetch Users API
 export const fetchUsers = async () => {
     try {
@@ -82,23 +83,6 @@ export const filterUsersByRole = (users, role, setFilteredUsers, setSelectedRole
     setCurrentPage(1);
 };
 
-// Sorting Function
-export const handleSort = (filteredUsers, setFilteredUsers, sortConfig, setSortConfig, column) => {
-    let direction = "asc";
-    if (sortConfig.key === column && sortConfig.direction === "asc") {
-        direction = "desc";
-    }
-    setSortConfig({ key: column, direction });
-
-    const sortedUsers = [...filteredUsers].sort((a, b) => {
-        if (a[column] < b[column]) return direction === "asc" ? -1 : 1;
-        if (a[column] > b[column]) return direction === "asc" ? 1 : -1;
-        return 0;
-    });
-
-    setFilteredUsers(sortedUsers);
-};
-
 // Delete User Function
 export const handleDelete = async (userId, users, filteredUsers, setUsers, setFilteredUsers) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this user?");
@@ -120,6 +104,24 @@ export const handleDelete = async (userId, users, filteredUsers, setUsers, setFi
     } else {
         toast.error(result.message);
     }
+};
+//! Users End
+
+// Sorting Function
+export const handleSort = (filteredUsers, setFilteredUsers, sortConfig, setSortConfig, column) => {
+    let direction = "asc";
+    if (sortConfig.key === column && sortConfig.direction === "asc") {
+        direction = "desc";
+    }
+    setSortConfig({ key: column, direction });
+
+    const sortedUsers = [...filteredUsers].sort((a, b) => {
+        if (a[column] < b[column]) return direction === "asc" ? -1 : 1;
+        if (a[column] > b[column]) return direction === "asc" ? 1 : -1;
+        return 0;
+    });
+
+    setFilteredUsers(sortedUsers);
 };
 
 // Function to handle file selection
@@ -161,12 +163,12 @@ export const handleUpload = async () => {
         }
     } catch (error) {
         toast.error("File upload failed.");
-        // console.error("File upload error:", error);
         return null;
     }
 };
 
-// get All compnay 
+//! company Start
+// get All company 
 export const getAllCompany = async (setCompanyShow, setShowModal) => {
     try {
         const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/show-company`;
@@ -181,7 +183,6 @@ export const getAllCompany = async (setCompanyShow, setShowModal) => {
             toast.error(responseData.message);
         }
     } catch (error) {
-        // console.error("Error fetching companies:", error);
         // toast.error("Error fetching companies. Check console for details.");
     }
 };
@@ -217,8 +218,10 @@ export const deleteCompany = async (companyId) => {
         return { statusCode: 500, message: "Error deleting user" };
     }
 };
+//! company End
 
-// get All compnay 
+//! Company Start
+// get All company Profile
 export const getAllCompanyProfile = async (setCompanyShow, setShowModal) => {
     try {
         const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/show-company_profile`;
@@ -233,7 +236,6 @@ export const getAllCompanyProfile = async (setCompanyShow, setShowModal) => {
             toast.error(responseData.message);
         }
     } catch (error) {
-        // console.error("Error fetching companies:", error);
         // toast.error("Error fetching companies. Check console for details.");
     }
 };
@@ -269,3 +271,55 @@ export const deleteCompanyProfile = async (companyId) => {
         return { statusCode: 500, message: "Error deleting user" };
     }
 };
+//! Company End
+
+//! Position Start
+export const getAllJobPosition = async (setCompanyShow, setShowModal) => {
+    try {
+        const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/show-job_position`;
+        const response = await axios.get(apiUrl);
+
+        const responseData = response.data;
+
+        if (responseData.statusCode === 200) {
+            setCompanyShow(responseData.users);
+            setShowModal(false);
+        } else {
+            toast.error(responseData.message);
+        }
+    } catch (error) {
+        // toast.error("Error fetching companies. Check console for details.");
+    }
+};
+
+// Delete company
+export const deleteJobPosition = async (PositionId) => {
+    try {
+        const confirmDelete = window.confirm("Are you sure you want to delete this company?");
+        if (confirmDelete) {
+            const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/delete-job-profile/${PositionId}`;
+            const response = await fetch(apiUrl, {
+                method: "DELETE",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await response.json();
+            if (data.statusCode === 200) {
+                toast.success(data.message);
+            } else {
+                toast.error(data.message);
+            }
+        } else {
+            toast.info("Company deletion cancelled.");
+            return { statusCode: 400, message: "Deletion cancelled by user" };
+        }
+
+    } catch (error) {
+        toast.error("An unexpected error occurred while deleting.");
+        return { statusCode: 500, message: "Error deleting user" };
+    }
+};
+//! Position End

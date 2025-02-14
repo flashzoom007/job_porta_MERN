@@ -80,7 +80,7 @@ const deleteCompanyProfile = async (req, res) => {
     }
 }
 
-// Delete company profile
+// create company profile
 const createCompanyProfile = async (req, res) => {
     try {
         const { name, description, url, image } = req.body;
@@ -131,7 +131,63 @@ const updateCompanyProfile = async (req, res) => {
 };
 
 //! *************** Company Profile API End 
+//! *************** Job Position API Start
+// Delete company Profile
+const deleteJobProfile = async (req, res) => {
+    try {
+        const companyId = req.params.id;
+
+        if (!companyId) {
+            res.json({ message: 'Company id is required', statusCode: 400 });
+        }
+        const query = `DELETE FROM job_position WHERE id = ?`;
+        conn.query(query, [companyId], (err, result) => {
+            if (result.affectedRows === 0) {
+                res.json({ message: 'Company not found', statusCode: 404 });
+            } else {
+                res.json({ message: 'Company deleted successfully', statusCode: 200 });
+            }
+        });
+
+    } catch (err) {
+        res.json({ message: 'Internal server error on delete Company', statusCode: 500 });
+    }
+}
+// create company profile
+const createJobPosition = async (req, res) => {
+    try {
+        const { name } = req.body;
+
+        if (!name) {
+            return res.json({ message: "Name field is required", statusCode: 400 });
+        }
+
+        // Check if the company name already exists
+        const checkSql = "SELECT id FROM `job_position` WHERE name = ?";
+        conn.query(checkSql, [name], (err, results) => {
+            if (err) {
+                return res.json({ message: "Database error", statusCode: 500, error: err.message });
+            }
+            if (results.length > 0) {
+                return res.json({ message: "Company name already exists", statusCode: 100 });
+            }
+
+            // If name doesn't exist, insert the new record
+            const insertSql = "INSERT INTO `job_position`(`name`) VALUES (?)";
+            conn.query(insertSql, [name, description, url, image], (err, result) => {
+                if (err) {
+                    return res.json({ message: "Failed to create job position", statusCode: 500, error: err.message });
+                }
+                return res.json({ message: "Job profile created successfully", statusCode: 200, data: result });
+            });
+        });
+
+    } catch (error) {
+        return res.json({ message: "Internal server error", statusCode: 500 });
+    }
+};
+//! *************** Job Position API End
 
 module.exports = {
-    createComapny, deleteCompany, updateCompany, deleteCompanyProfile, createCompanyProfile, updateCompanyProfile
+    createComapny, deleteCompany, updateCompany, deleteCompanyProfile, createCompanyProfile, updateCompanyProfile, deleteJobProfile, createJobPosition
 };

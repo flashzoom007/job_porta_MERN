@@ -1,0 +1,51 @@
+table-name: 
+
+1.company
+    -- id(pk)
+    -- name
+
+2.positions_desc 
+    -- id(pk)
+    -- open_postions
+    -- no_of_open_positions
+
+3.company_profile
+    -- id (pk)
+    -- name (fk - company->name)
+    -- desc
+    -- url
+    -- image
+
+4.job_open_list
+
+    -- id (pk)
+    -- company_name(fk - company->name)
+    -- position_desc
+    -- position_skills
+    -- position_open_date
+
+5.users
+    -- id (pk)
+    -- name 
+    -- email
+    -- password
+    -- role
+    -- file_upload
+    -- number
+    -- created_at
+
+6.job_apply_list
+
+    -- id (pk)
+    -- company_name (fk - company->name)
+    -- user_name (fk - users->name)
+    -- position-name  (fk - positions_desc->open_postions)
+    -- apply-date
+    -- resume
+    -- created_at
+
+7.job_position (store all positions)
+
+    -- id (pk)
+    --name
+    -- created

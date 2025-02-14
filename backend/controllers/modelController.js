@@ -15,7 +15,8 @@ const getAllRecords = async (req, res) => {
             'company_profile',
             'job_open_list',
             'users',
-            'job_apply_list'
+            'job_apply_list',
+            'job_position'
         ];
 
         if (!validTables.includes(tableName)) {
