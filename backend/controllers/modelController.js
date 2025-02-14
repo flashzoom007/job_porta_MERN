@@ -134,8 +134,8 @@ const deleteAllUsers = async (req, res) => {
             res.json({ message: 'All Users are deleted successfully', statusCode: 200 });
         })
 
-    } catch (err) {
-        console.log('Errro while delete all users', err)
+    } catch (err) {        
+        res.json({ message: 'Internal server error on delete user', statusCode: 500 });
     }
 }
 

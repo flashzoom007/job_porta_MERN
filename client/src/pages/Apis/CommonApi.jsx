@@ -153,7 +153,7 @@ export const handleUpload = async () => {
         });
 
         if (response.data.statusCode === 200) {
-            toast.success("File uploaded successfully.");
+            // toast.success("File uploaded successfully.");
             return response.data.fileName;
         } else {
             toast.error(response.data.message);
@@ -161,7 +161,7 @@ export const handleUpload = async () => {
         }
     } catch (error) {
         toast.error("File upload failed.");
-        console.error("File upload error:", error);
+        // console.error("File upload error:", error);
         return null;
     }
 };
@@ -181,16 +181,69 @@ export const getAllCompany = async (setCompanyShow, setShowModal) => {
             toast.error(responseData.message);
         }
     } catch (error) {
-        console.error("Error fetching companies:", error);
+        // console.error("Error fetching companies:", error);
         // toast.error("Error fetching companies. Check console for details.");
     }
 };
 
+// Delete company
 export const deleteCompany = async (companyId) => {
     try {
         const confirmDelete = window.confirm("Are you sure you want to delete this company?");
         if (confirmDelete) {
             const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/delete-company/${companyId}`;
+            const response = await fetch(apiUrl, {
+                method: "DELETE",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await response.json();
+            if (data.statusCode === 200) {
+                toast.success(data.message);
+                // window.location.reload();
+            } else {
+                toast.error(data.message);
+            }
+        } else {
+            toast.info("Company deletion cancelled.");
+            return { statusCode: 400, message: "Deletion cancelled by user" };
+        }
+
+    } catch (error) {
+        toast.error("An unexpected error occurred while deleting.");
+        return { statusCode: 500, message: "Error deleting user" };
+    }
+};
+
+// get All compnay 
+export const getAllCompanyProfile = async (setCompanyShow, setShowModal) => {
+    try {
+        const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/show-company_profile`;
+        const response = await axios.get(apiUrl);
+
+        const responseData = response.data;
+
+        if (responseData.statusCode === 200) {
+            setCompanyShow(responseData.users);
+            setShowModal(false);
+        } else {
+            toast.error(responseData.message);
+        }
+    } catch (error) {
+        // console.error("Error fetching companies:", error);
+        // toast.error("Error fetching companies. Check console for details.");
+    }
+};
+
+// Delete company Profile
+export const deleteCompanyProfile = async (companyId) => {
+    try {
+        const confirmDelete = window.confirm("Are you sure you want to delete this company?");
+        if (confirmDelete) {
+            const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/delete-company-profile/${companyId}`;
             const response = await fetch(apiUrl, {
                 method: "DELETE",
                 headers: {

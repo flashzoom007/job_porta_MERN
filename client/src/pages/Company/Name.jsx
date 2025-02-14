@@ -4,48 +4,51 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { getAllCompany, deleteCompany } from '../Apis/CommonApi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Name = () => {
+    const navigate = useNavigate();
     const [companyShow, setCompanyShow] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const [selectedCompany, setSelectedCompany] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
 
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        formState: { errors },
-        reset
-    } = useForm();
+    const handleRefresh = () => {
+        setRefresh(prev => !prev);
+        navigate(0); 
+    };
+
+    const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
 
     useEffect(() => {
-        getAllCompany(setCompanyShow);
+        getAllCompany(setCompanyShow, setShowModal);
+        getAllCompany((data)=>{
+            console.log(data)
+        })
     }, [refresh]);
 
     const onSubmit = async (data) => {
         try {
             let apiUrl = `${import.meta.env.VITE_BACKEND_URL}/create-company`;
-            let method = 'POST';
+            let payload = { name: data.name };
 
             if (isEditMode && selectedCompany) {
-                apiUrl = `${import.meta.env.VITE_BACKEND_URL}/update-company/${selectedCompany.id}`;
-                method = 'PUT';
+                apiUrl = `${import.meta.env.VITE_BACKEND_URL}/update-company`;
+                payload.id = selectedCompany.id;
             }
-
-            const response = await axios({
-                method: method,
-                url: apiUrl,
-                data: { name: data.name },
+            console.log('apiUrl', apiUrl);
+            const response = await axios.post(apiUrl, payload, {
                 headers: { 'Content-Type': 'application/json' },
             });
 
             if (response.data.statusCode === 200) {
                 toast.success(response.data.message);
                 closeModal();
-                setRefresh(prev => !prev);
-            } else {
+                handleRefresh(); 
+            } else if(response.data.statusCode === 100){
+                toast.info(response.data.error);
+            }else {
                 toast.error(response.data.message);
             }
         } catch (error) {
@@ -58,6 +61,16 @@ const Name = () => {
         setIsEditMode(true);
         setShowModal(true);
         setValue('name', company.name);
+    };
+
+    const handleDelete = async (companyId) => {
+        try {
+            await deleteCompany(companyId);
+            toast.success("Company deleted successfully.");
+            handleRefresh();
+        } catch (error) {
+            toast.error("Failed to delete company.");
+        }
     };
 
     const closeModal = () => {
@@ -75,7 +88,7 @@ const Name = () => {
                     setIsEditMode(false);
                     reset();
                 }}
-                className="btn btn-primary mb-3"
+                className="btn btn-outline-primary mb-3"
             >
                 Add Company
             </button>
@@ -86,7 +99,7 @@ const Name = () => {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">{isEditMode ? 'Edit Company' : 'Add Company'}</h5>
-                                <button className="btn-close" onClick={closeModal}></button>
+                                <button className="btn-outline-close" onClick={closeModal}></button>
                             </div>
                             <div className="modal-body">
                                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -99,10 +112,10 @@ const Name = () => {
                                         {errors.name && <p className="text-danger">Company name is required.</p>}
                                     </div>
                                     <div className="d-flex justify-content-end gap-2">
-                                        <button type="submit" className="btn btn-success">
+                                        <button type="submit" className="btn btn-outline-success">
                                             {isEditMode ? 'Update' : 'Add'}
                                         </button>
-                                        <button type="button" className="btn btn-danger" onClick={closeModal}> Close </button>
+                                        <button type="button" className="btn btn-outline-danger" onClick={closeModal}> Close </button>
                                     </div>
                                 </form>
                             </div>
@@ -117,6 +130,7 @@ const Name = () => {
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Create Job</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -126,8 +140,9 @@ const Name = () => {
                             <tr key={company.id}>
                                 <td>{index + 1}</td>
                                 <td>{company.name}</td>
+                                <td><button className="btn btn-outline-info"> Reaming </button></td>
                                 <td> <button className="btn btn-outline-primary" onClick={() => handleEdit(company)}> <FaEdit /> </button> </td>
-                                <td> <button className="btn btn-outline-danger" onClick={() => deleteCompany(company.id)} > <FaTrash /> </button> </td>
+                                <td> <button className="btn btn-outline-danger" onClick={() => handleDelete(company.id)} > <FaTrash /> </button> </td>
                             </tr>
                         ))}
                     </tbody>

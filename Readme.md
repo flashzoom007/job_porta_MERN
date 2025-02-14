@@ -89,3 +89,5 @@ Update versions:
 [2.1] =  add new database, with also download the youtube playlist video
 
 [2.2] = Show, update and delete the company names in react, node and databse
+
+[2.3] = New compnay page and profile, sync with databse with api, working properly
