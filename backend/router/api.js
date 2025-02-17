@@ -2,7 +2,7 @@ const express = require('express');
 const { Home } = require('../controllers/auth');
 const { getAllRecords, userCreate, Login, deleteUser, updateUser, updateShowUser, uploadFile, logLogin, deleteAllUsers } = require('../controllers/modelController');
 const { processPlaylist } = require('../controllers/playlistDownload');
-const { createComapny, deleteCompany, updateCompany, deleteCompanyProfile, createCompanyProfile , updateCompanyProfile, deleteJobProfile,createJobPosition } = require('../controllers/companyController')
+const { createComapny, deleteCompany, updateCompany, deleteCompanyProfile, createCompanyProfile, updateCompanyProfile, deleteJobProfile, createJobPosition, updateJobPosition,deleteAllJobsPositions, deleteAllCompanys, deleteAllJobsprofiles } = require('../controllers/companyController')
 const router = express.Router();
 
 // Get API 
@@ -20,12 +20,10 @@ router.route('/upload-file').post(uploadFile);
 router.route('/playlist-download').post(processPlaylist);
 router.route('/create-company').post(createComapny);
 router.route('/update-company').post(updateCompany);
-router.route('/create-company-profile').post(createCompanyProfile );
+router.route('/create-company-profile').post(createCompanyProfile);
 router.route('/update-company-profile').post(updateCompanyProfile);
 router.route('/create-job-position').post(createJobPosition);
-// Patch API
-
-
+router.route('/update-job-position').post(updateJobPosition);
 
 // Delete API
 router.route('/delete/:id').delete(deleteUser);
@@ -33,5 +31,8 @@ router.route('/delete-company/:id').delete(deleteCompany);
 router.route('/delete-all-users').delete(deleteAllUsers);
 router.route('/delete-company-profile/:id').delete(deleteCompanyProfile);
 router.route('/delete-job-profile/:id').delete(deleteJobProfile);
+router.route('/delete-all-companys').delete(deleteAllCompanys);
+router.route('/delete-all-jobs').delete(deleteAllJobsPositions);
+router.route('/delete-all-profiles').delete(deleteAllJobsprofiles);
 
 module.exports = router;

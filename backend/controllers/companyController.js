@@ -55,6 +55,20 @@ const updateCompany = async (req, res) => {
         });
     } catch (error) { return res.json({ message: "Internal server error on create company", statusCode: 500 }); }
 };
+
+// Delete All Companys
+const deleteAllCompanys = async (req, res) => {
+    try {
+        const query = `DELETE FROM company WHERE 1`;
+        conn.query(query, (err, result) => {
+            res.json({ message: 'All Users are deleted successfully', statusCode: 200 });
+        })
+
+    } catch (err) {
+        res.json({ message: 'Internal server error on delete user', statusCode: 500 });
+    }
+}
+
 //! *************** Company API End 
 
 //! *************** Company Profile API start 
@@ -117,20 +131,37 @@ const createCompanyProfile = async (req, res) => {
 // update new company profile
 const updateCompanyProfile = async (req, res) => {
     try {
-        const {id, name, description, url, image } = req.body;
+        const { id, name, description, url, image } = req.body;
 
         if (!name || !description || !url || !image) {
             return res.json({ message: "Company profile Details are required", statusCode: 400 });
         }
         const sql = "UPDATE `company_profile` SET name=?,description=?,url=?,image=? WHERE id=?";
- 
+
         conn.query(sql, [name, description, url, image, id], (err, result) => {
-            res.json({ message: "Company Profile updated successfully.", statusCode: 200 });
+            if (name.length > 0) {
+                return res.json({ message: "Company Profile Already exist..!try other name.", statusCode: 100 });
+            }
+            return res.json({ message: "Company Profile updated successfully.", statusCode: 200 });
         });
     } catch (error) { return res.json({ message: "Internal server error on create company", statusCode: 500 }); }
 };
 
+// Delete All Users
+const deleteAllJobsprofiles = async (req, res) => {
+    try {
+        const query = `DELETE FROM company_profile WHERE 1`;
+        conn.query(query, (err, result) => {
+            res.json({ message: 'All Users are deleted successfully', statusCode: 200 });
+        })
+
+    } catch (err) {
+        res.json({ message: 'Internal server error on delete user', statusCode: 500 });
+    }
+}
+
 //! *************** Company Profile API End 
+
 //! *************** Job Position API Start
 // Delete company Profile
 const deleteJobProfile = async (req, res) => {
@@ -153,6 +184,7 @@ const deleteJobProfile = async (req, res) => {
         res.json({ message: 'Internal server error on delete Company', statusCode: 500 });
     }
 }
+
 // create company profile
 const createJobPosition = async (req, res) => {
     try {
@@ -169,12 +201,12 @@ const createJobPosition = async (req, res) => {
                 return res.json({ message: "Database error", statusCode: 500, error: err.message });
             }
             if (results.length > 0) {
-                return res.json({ message: "Company name already exists", statusCode: 100 });
+                return res.json({ message: "Job Position already exists...! Try other name", statusCode: 100 });
             }
 
             // If name doesn't exist, insert the new record
             const insertSql = "INSERT INTO `job_position`(`name`) VALUES (?)";
-            conn.query(insertSql, [name, description, url, image], (err, result) => {
+            conn.query(insertSql, [name], (err, result) => {
                 if (err) {
                     return res.json({ message: "Failed to create job position", statusCode: 500, error: err.message });
                 }
@@ -186,8 +218,40 @@ const createJobPosition = async (req, res) => {
         return res.json({ message: "Internal server error", statusCode: 500 });
     }
 };
+
+// update new company profile
+const updateJobPosition = async (req, res) => {
+    try {
+        const { id, name } = req.body;
+        if (!name) {
+            return res.json({ message: "Job profile Details are required", statusCode: 400 });
+        }
+        const sql = "UPDATE `job_position` SET name=? WHERE id=?";
+
+        conn.query(sql, [name, id], (err, result) => {
+            if(name.length>0){
+                return res.json({ message: "Job profile already exist...! Try other one.", statusCode: 100 });
+            }
+            res.json({ message: "Job Profile updated successfully.", statusCode: 200 });
+        });
+    } catch (error) { return res.json({ message: "Internal server error on Job profile Update", statusCode: 500 }); }
+};
+
+// Delete All Users
+const deleteAllJobsPositions = async (req, res) => {
+    try {
+        const query = `DELETE FROM job_position WHERE 1`;
+        conn.query(query, (err, result) => {
+            res.json({ message: 'All Users are deleted successfully', statusCode: 200 });
+        })
+
+    } catch (err) {
+        res.json({ message: 'Internal server error on delete user', statusCode: 500 });
+    }
+}
+
 //! *************** Job Position API End
 
 module.exports = {
-    createComapny, deleteCompany, updateCompany, deleteCompanyProfile, createCompanyProfile, updateCompanyProfile, deleteJobProfile, createJobPosition
+    createComapny, deleteCompany, updateCompany, deleteCompanyProfile, createCompanyProfile, updateCompanyProfile, deleteJobProfile, createJobPosition, updateJobPosition, deleteAllJobsPositions, deleteAllCompanys, deleteAllJobsprofiles
 };

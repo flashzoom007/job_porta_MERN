@@ -17,24 +17,28 @@ import JobPosition from "../pages/Company/JobPosition";
 const Index = () => {
   return (
     <>
-        <Routes>
-          <Route path="/" element={<Home />} /> 
-          <Route path="/job" element={<Job />} />           
-          <Route path="/users" element={<PrivateRoute props={<Users />} />} /> 
-          <Route path="/users/update-user/:id" element={<UpdateUser /> } /> 
-          <Route path="/contact" element={<Contact />} /> 
-          <Route path="/login" element={<Login />} /> 
-          <Route path="/chart" element={<Chart />} /> 
-          <Route path="/job-create" element={<JobCreate />} /> 
-          <Route path="/youtube-playlist" element={<YoutubePlaylist />} /> 
+      <Routes>
+        <Route path="/" element={<Home />} />        
+        <Route path="/users" element={<PrivateRoute props={<Users />} />} />
+        <Route path="/users/update-user/:id" element={<UpdateUser />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
 
-{/* Company */}
-          <Route path="/company-name" element={<CompanyName />} /> 
-          <Route path="/company-profile" element={<CompanyProfile />} /> 
-          <Route path="/job-position" element={<JobPosition />} /> 
+        {/* Job */}
+        <Route path="/job-create" element={<JobCreate />} />
+        <Route path="/job" element={<Job />} />
 
-          <Route path="*" element={<Error />} /> 
-        </Routes>
+        {/* Company */}
+        <Route path="/company-name" element={<CompanyName />} />
+        <Route path="/company-profile" element={<CompanyProfile />} />
+        <Route path="/job-position" element={<JobPosition />} />
+
+        {/* Random  */}
+        <Route path="/charts" element={<Chart />} />      
+        <Route path="/youtube-playlist" element={<YoutubePlaylist />} />
+        
+        <Route path="*" element={<Error />} />
+      </Routes>
     </>
   )
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { getAllJobPosition, deleteJobPosition } from '../Apis/CommonApi';
+import { getAllJobPosition, deleteJobPosition, deleteAllJobs } from '../Apis/CommonApi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,11 +29,11 @@ const JobPosition = () => {
 
     const onSubmit = async (data) => {
         try {
-            let apiUrl = `${import.meta.env.VITE_BACKEND_URL}/create-company`;
+            let apiUrl = `${import.meta.env.VITE_BACKEND_URL}/create-job-position`;
             let payload = { name: data.name };
 
             if (isEditMode && selectedCompany) {
-                apiUrl = `${import.meta.env.VITE_BACKEND_URL}/update-company`;
+                apiUrl = `${import.meta.env.VITE_BACKEND_URL}/update-job-position`;
                 payload.id = selectedCompany.id;
             }
             const response = await axios.post(apiUrl, payload, {
@@ -45,7 +45,7 @@ const JobPosition = () => {
                 closeModal();
                 handleRefresh();
             } else if (response.data.statusCode === 100) {
-                toast.info(response.data.error);
+                toast.info(response.data.message);
             } else {
                 toast.error(response.data.message);
             }
@@ -80,16 +80,26 @@ const JobPosition = () => {
 
     return (
         <div className="container">
-            <button
-                onClick={() => {
-                    setShowModal(true);
-                    setIsEditMode(false);
-                    reset();
-                }}
-                className="btn btn-outline-primary mb-3"
-            >
-                Add Company
-            </button>
+            <div className='d-flex justify-content-between align-items-center my-3'>
+                <button
+                    onClick={() => {
+                        setShowModal(true);
+                        setIsEditMode(false);
+                        reset();
+                    }}
+                    className="btn btn-outline-primary mb-3"
+                >
+                    Add New Job
+                </button>
+                <button
+                    onClick={() => {
+                        deleteAllJobs();                        
+                    }}
+                    className="btn btn-outline-danger mb-3"
+                >
+                    Delete All Jobs
+                </button>
+            </div>
 
             {showModal && (
                 <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.5)' }}>
@@ -138,7 +148,8 @@ const JobPosition = () => {
                             <tr key={company.id}>
                                 <td>{index + 1}</td>
                                 <td>{company.name}</td>
-                                <td>{company.created}</td>
+                                {/* <td>{company.created}</td> */}
+                                <td>{company.created.split('T')[0]}</td>
                                 <td> <button className="btn btn-outline-primary" onClick={() => handleEdit(company)}> <FaEdit /> </button> </td>
                                 <td> <button className="btn btn-outline-danger" onClick={() => handleDelete(company.id)} > <FaTrash /> </button> </td>
                             </tr>

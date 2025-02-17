@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { getAllCompany, deleteCompany } from '../Apis/CommonApi';
+import { getAllCompany, deleteCompany, deleteAllCompanys } from '../Apis/CommonApi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { IoIosCreate } from "react-icons/io";
@@ -17,14 +17,14 @@ const Name = () => {
 
     const handleRefresh = () => {
         setRefresh(prev => !prev);
-        navigate(0); 
+        navigate(0);
     };
 
     const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
 
     useEffect(() => {
         getAllCompany(setCompanyShow, setShowModal);
-        getAllCompany((data)=>{
+        getAllCompany((data) => {
             console.log(data)
         })
     }, [refresh]);
@@ -46,10 +46,10 @@ const Name = () => {
             if (response.data.statusCode === 200) {
                 toast.success(response.data.message);
                 closeModal();
-                handleRefresh(); 
-            } else if(response.data.statusCode === 100){
-                toast.info(response.data.error);
-            }else {
+                handleRefresh();
+            } else if (response.data.statusCode === 100) {
+                toast.info(response.data.message);
+            } else {
                 toast.error(response.data.message);
             }
         } catch (error) {
@@ -83,16 +83,26 @@ const Name = () => {
 
     return (
         <div className="container">
-            <button
-                onClick={() => {
-                    setShowModal(true);
-                    setIsEditMode(false);
-                    reset();
-                }}
-                className="btn btn-outline-primary mb-3"
-            >
-                Add Company
-            </button>
+            <div className='d-flex justify-content-between align-items-center my-3'>
+                <button
+                    onClick={() => {
+                        setShowModal(true);
+                        setIsEditMode(false);
+                        reset();
+                    }}
+                    className="btn btn-outline-primary mb-3"
+                >
+                    Add Company
+                </button>
+                <button
+                    onClick={() => {
+                        deleteAllCompanys();
+                    }}
+                    className="btn btn-outline-danger mb-3"
+                >
+                    Delete All Company
+                </button>
+            </div>
 
             {showModal && (
                 <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.5)' }}>

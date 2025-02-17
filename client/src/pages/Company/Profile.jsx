@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { getAllCompanyProfile, deleteCompanyProfile, getAllCompany, handleFileChange, handleUpload } from '../Apis/CommonApi';
+import { getAllCompanyProfile, deleteCompanyProfile, getAllCompany, handleFileChange, handleUpload, deleteAllProfiles } from '../Apis/CommonApi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const Profile = () => {
@@ -42,8 +42,6 @@ const Profile = () => {
                 name: data.name,
                 description: data.description,
                 url: data.url,
-                // image: data.image
-                /* image: selectedFile ? selectedFile.name : data.image, */
                 image: uploadFileName
             };
 
@@ -59,6 +57,8 @@ const Profile = () => {
                 toast.success(response.data.message);
                 closeModal();
                 handleRefresh();
+            } else if (response.data.statusCode === 100) {
+                toast.info(response.data.message);
             } else {
                 toast.error(response.data.message);
             }
@@ -94,23 +94,28 @@ const Profile = () => {
         reset();
     };
 
-    // const handleFileChange = (e) => {
-    //     const file = e.target.files[0];
-    //     setSelectedFile(file); // Store the selected file in state
-    // };
-
     return (
         <div className="container">
-            <button
-                onClick={() => {
-                    setShowModal(true);
-                    setIsEditMode(false);
-                    reset();
-                }}
-                className="btn btn-outline-primary mb-3"
-            >
-                Add Company
-            </button>
+            <div className='d-flex justify-content-between align-items-center my-3'>
+                <button
+                    onClick={() => {
+                        setShowModal(true);
+                        setIsEditMode(false);
+                        reset();
+                    }}
+                    className="btn btn-outline-primary mb-3"
+                >
+                    Add Profile
+                </button>
+                <button
+                    onClick={() => {
+                        deleteAllProfiles();
+                    }}
+                    className="btn btn-outline-danger mb-3"
+                >
+                    Delete All Profile
+                </button>
+            </div>
 
             {showModal && (
                 <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.5)' }}>
@@ -152,7 +157,7 @@ const Profile = () => {
                                             type="file"
                                             accept="image/*"
                                             {...register('photos',
-                                                // { required: true }
+                                                { required: true }
                                             )}
                                             className={`form-control ${errors.photos ? 'is-invalid' : ''}`}
                                             onChange={handleFileChange}
@@ -193,7 +198,7 @@ const Profile = () => {
                                 <td>{index + 1}</td>
                                 <td>{company.name}</td>
                                 <td>{company.description}</td>
-                                <td><a href={company.url} target='_blank' rel="noopener noreferrer">{company.url}</a></td>                              
+                                <td><a href={company.url} target='_blank' rel="noopener noreferrer">{company.url}</a></td>
                                 <td>
                                     <img
                                         src={`${import.meta.env.VITE_FRONTEND_URL}/upload/${company.image}`} // Use relative path

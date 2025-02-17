@@ -1,7 +1,6 @@
 import { toast } from "react-toastify";
 import axios from "axios";
 let file = null;
-import { useNavigate } from 'react-router-dom';
 
 //! Users Start
 // Fetch Users API
@@ -65,6 +64,9 @@ export const deleteAll = async () => {
 
     if (data.statusCode === 200) {
         toast.success(data.message);
+        setTimeout(() => {
+            window.location.reload();
+        });
         return data.message;
     } else {
         toast.error(data.message);
@@ -187,6 +189,38 @@ export const getAllCompany = async (setCompanyShow, setShowModal) => {
     }
 };
 
+// Delete all companies
+export const deleteAllCompanys = async () => {
+    try {
+        const confirmDelete = window.confirm("Are you sure you want to delete this company?");
+        if (confirmDelete) {
+            const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/delete-all-companys/`;
+            const response = await fetch(apiUrl, {
+                method: "DELETE",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await response.json();
+            if (data.statusCode === 200) {
+                toast.success(data.message);
+                window.location.reload();
+            } else {
+                toast.error(data.message);
+            }
+        } else {
+            toast.info("Company deletion cancelled.");
+            return { statusCode: 400, message: "Deletion cancelled by user" };
+        }
+
+    } catch (error) {
+        toast.error("An unexpected error occurred while deleting.");
+        return { statusCode: 500, message: "Error deleting user" };
+    }
+};
+
 // Delete company
 export const deleteCompany = async (companyId) => {
     try {
@@ -218,9 +252,9 @@ export const deleteCompany = async (companyId) => {
         return { statusCode: 500, message: "Error deleting user" };
     }
 };
-//! company End
+//! Company  End
 
-//! Company Start
+//! Company Profile Start
 // get All company Profile
 export const getAllCompanyProfile = async (setCompanyShow, setShowModal) => {
     try {
@@ -271,9 +305,43 @@ export const deleteCompanyProfile = async (companyId) => {
         return { statusCode: 500, message: "Error deleting user" };
     }
 };
-//! Company End
 
-//! Position Start
+// Delete all companies
+export const deleteAllProfiles = async () => {
+    try {
+        const confirmDelete = window.confirm("Are you sure you want to delete this company?");
+        if (confirmDelete) {
+            const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/delete-all-profiles/`;
+            const response = await fetch(apiUrl, {
+                method: "DELETE",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await response.json();
+            if (data.statusCode === 200) {
+                toast.success(data.message);
+                window.location.reload();
+            } else {
+                toast.error(data.message);
+            }
+        } else {
+            toast.info("Company deletion cancelled.");
+            return { statusCode: 400, message: "Deletion cancelled by user" };
+        }
+
+    } catch (error) {
+        toast.error("An unexpected error occurred while deleting.");
+        return { statusCode: 500, message: "Error deleting user" };
+    }
+};
+
+
+//! Company Profile End
+
+//! Job Position Start
 export const getAllJobPosition = async (setCompanyShow, setShowModal) => {
     try {
         const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/show-job_position`;
@@ -322,4 +390,30 @@ export const deleteJobPosition = async (PositionId) => {
         return { statusCode: 500, message: "Error deleting user" };
     }
 };
+
+// delete All Jobs 
+export const deleteAllJobs = async () => {
+    const isConfirmed = window.confirm("Are you sure you want to delete all users?");
+    if (!isConfirmed) {
+        return;
+    }
+    const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/delete-all-jobs`;
+    const response = await fetch(apiUrl, {
+        method: "DELETE",
+        "Content-Type": "application/json"
+    });
+
+    const data = await response.json();
+
+    if (data.statusCode === 200) {
+        toast.success(data.message);
+        setTimeout(() => {
+            window.location.reload();
+        });
+        return data.message;
+    } else {
+        toast.error(data.message);
+        return data.message;
+    }
+}
 //! Position End

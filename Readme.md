@@ -91,3 +91,5 @@ Update versions:
 [2.2] = Show, update and delete the company names in react, node and databse
 
 [2.3] = New compnay page and profile, sync with databse with api, working properly
+
+[2.4] = Up to company, company profile, position add - complete
