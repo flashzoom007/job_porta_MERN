@@ -36,7 +36,11 @@ const getAllRecords = async (req, res) => {
 
 const getShowJobUsers = async (req, res) => {
     try {  
-        const query = `SELECT j.*, u.name AS posted_by_name FROM job_create_list j LEFT JOIN users u ON j.posted_by = u.id;`
+        const query = `SELECT jcl.*, 
+        user.name AS posted_by_name, 
+        user.email AS posted_by_email 
+        FROM job_create_list jcl LEFT JOIN users 
+        user ON jcl.posted_by = user.id;`
         conn.query(query, (err, results) => {
             if (err) {
                 return res.status(500).json({ message: 'Internal server error', statusCode: 500 });

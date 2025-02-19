@@ -71,7 +71,7 @@ const Users = () => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
-        <div className="m-5">
+        <div className="mt-0 mx-5 mb-5">
             <h1 className="text-center fw-bold text-decoration-underline mb-3">All Users List</h1>
             {isLoading ? (
                 <p>Loading...</p>

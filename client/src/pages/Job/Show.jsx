@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { getShowJobUsers,  deleteCreatedJobPosition, deleteAllCreatedJobs } from '../Apis/CommonApi';
+import { getShowJobUsers, deleteCreatedJobPosition, deleteAllCreatedJobs } from '../Apis/CommonApi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { FaAngleRight } from "react-icons/fa6";
 import CreateJob from './CreateJob';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const ShowJob = () => {
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ const ShowJob = () => {
 
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
 
-  useEffect(() => {    
-     getShowJobUsers(setCompanyShow, setShowModal);  
+  useEffect(() => {
+    getShowJobUsers(setCompanyShow, setShowModal);
   }, [refresh]);
 
   const onSubmit = async (data) => {
@@ -88,110 +89,114 @@ const ShowJob = () => {
     setValue("job_type", company.job_type); // Ensure dropdown value stays the same
     setValue("experience", company.experience);
     setValue("location", company.location);
-};
+  };
 
-const handleDelete = async (companyId) => {
-  try {
-    await deleteCreatedJobPosition(companyId);
-    handleRefresh();
-  } catch (error) {
-    toast.error("Failed to delete company.");
-  }
-};
+  const handleDelete = async (companyId) => {
+    try {
+      await deleteCreatedJobPosition(companyId);
+      handleRefresh();
+    } catch (error) {
+      toast.error("Failed to delete company.");
+    }
+  };
 
-const closeModal = () => {
-  setShowModal(false);
-  setSelectedCompany(null);
-  setIsEditMode(false);
-  reset();
-};
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedCompany(null);
+    setIsEditMode(false);
+    reset();
+  };
 
-return (
-  <div className="container">
-    <div className='d-flex flex-wrap justify-content-between align-items-center my-3'>
-      <button
-        onClick={() => {
-          setShowModal(true);
-          setIsEditMode(false);
-          reset();
-        }}
-        className="btn btn-outline-primary mb-3"
-      >
-        Add New <FaAngleRight />
-      </button>
-      <button
-        onClick={() => {
-          deleteAllCreatedJobs();
-        }}
-        className="btn btn-outline-danger mb-3"
-      >
-        Delete All
-      </button>
-    </div>
-
-    {showModal && (
-      <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.5)' }}>
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">{isEditMode ? 'Edit job' : 'Add job'}</h5>
-              <button type="button" className="btn-close" onClick={closeModal} aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              <CreateJob
-                onSubmit={onSubmit}
-                isEditMode={isEditMode}
-                closeModal={closeModal}
-                selectedJob={selectedCompany}
-              />
+  return (
+    
+    <div className="container">
+      {userRole !== "student" &&
+        <div className='d-flex flex-wrap justify-content-between align-items-center my-3'>
+          <button
+            onClick={() => {
+              setShowModal(true);
+              setIsEditMode(false);
+              reset();
+            }}
+            className="btn btn-outline-primary mb-3"
+          >
+            Add New <FaAngleRight />
+          </button>
+          <button
+            onClick={() => {
+              deleteAllCreatedJobs();
+            }}
+            className="btn btn-outline-danger mb-3"
+          >
+            Delete All
+          </button>
+        </div>
+      }
+      {showModal && (
+        <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">{isEditMode ? 'Edit job' : 'Add job'}</h5>
+                <button type="button" className="btn-close" onClick={closeModal} aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+                <CreateJob
+                  onSubmit={onSubmit}
+                  isEditMode={isEditMode}
+                  closeModal={closeModal}
+                  selectedJob={selectedCompany}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
 
-    <div className="table-responsive">
-      <table className="table table-striped table-hover table-bordered border-dark">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Company Name</th>
-            <th>Role</th>
-            <th>Description</th>
-            <th>Skills</th>
-            {/* <th>Salary</th> */}
-            <th>Job Type</th>
-            <th>Experience</th>
-            <th>Location</th>
-            <th>Created At</th>
-            <th>Posted By</th>
-            {userRole !== "student" && <th>Edit</th>}
-            {userRole !== "student" && <th>Delete</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {companyShow.map((company, index) => (
-            <tr key={company.id}>
-              <td>{index + 1}</td>
-              <td>{company.company_name}</td>
-              <td>{company.role}</td>
-              <td>{company.description}</td>
-              <td>{company.skills}</td>
-              {/* <td>{company.salary}</td> */}
-              <td>{company.job_type}</td>
-              <td>{company.experience}</td>
-              <td>{company.location}</td>
-              <td>{company.created_at.split("T")[0]}</td>
-              <td>{company.posted_by_name}</td>
-              {userRole !== "student" && <td> <button className="btn btn-outline-primary" onClick={() => handleEdit(company)} > <FaEdit /> </button> </td>}
-              {userRole !== "student" && <td> <button className="btn btn-outline-danger" onClick={() => handleDelete(company.id)} > <FaTrash /> </button> </td>}
+      <div className="table-responsive">
+        <table className="table table-striped table-hover table-bordered border-dark">
+          <thead>
+            <tr>
+              {(userRole === "student" || userRole === "admin") && <th>Apply</th>}
+              <th>ID</th>
+              <th>Company Name</th>
+              <th>Role</th>
+              <th>Description</th>
+              <th>Skills</th>
+              {/* <th>Salary</th> */}
+              <th>Job Type</th>
+              <th>Experience<br />(Years)</th>
+              <th>Location</th>
+              <th>Created At</th>
+              <th>Posted By</th>
+              {userRole !== "student" && <th>Edit</th>}
+              {userRole !== "student" && <th>Delete</th>}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {companyShow.map((company, index) => (
+              <tr key={company.id}>
+                {(userRole === "student" || userRole === "admin") && <td> <button className="btn btn-outline-primary" onClick={() => handleEdit(company)} > <FaEdit /> </button> </td>}
+                <td>{index + 1}</td>
+                <td>{company.company_name}</td>
+                <td>{company.role}</td>
+                <td>{company.description}</td>
+                <td>{company.skills}</td>
+                {/* <td>{company.salary}</td> */}
+                <td>{company.job_type}</td>
+                <td>{company.experience}</td>
+                <td>{company.location}</td>
+                <td>{company.created_at.split("T")[0]}</td>
+                <td>{company.posted_by_name}</td>
+                {userRole !== "student" && <td> <button className="btn btn-outline-primary" onClick={() => handleEdit(company)} > <FaEdit /> </button> </td>}
+                {userRole !== "student" && <td> <button className="btn btn-outline-danger" onClick={() => handleDelete(company.id)} > <FaTrash /> </button> </td>}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default ShowJob;

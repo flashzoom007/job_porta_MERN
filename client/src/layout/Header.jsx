@@ -8,6 +8,7 @@ const Header = () => {
     const isAuthenticated = localStorage.getItem("userToken");
     const userRole = localStorage.getItem("userRole");
     const [username, setUsername] = useState("");
+    const [userrole, setUserrole] = useState("");
     const dropdownRef = useRef(null);
     const companyDropdownRef = useRef(null);
 
@@ -39,8 +40,10 @@ const Header = () => {
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("userName");
+        const storedUserrole = localStorage.getItem("userRole");
         if (storedUsername) {
             setUsername(storedUsername);
+            setUserrole(storedUserrole);
         }
     }, []);
 
@@ -125,11 +128,18 @@ const Header = () => {
                         </button>
                     </Link>
 
-                    {/* {isAuthenticated && (
-                        <div className="text-dark">
-                            Welcome, <strong>{username}</strong>
-                        </div>
-                    )} */}
+                    <div className="d-flex justify-content-end w-100 mt-3">
+                        {isAuthenticated && (
+                            <span>
+                                <div className="text-dark">
+                                    User: <strong>{username}</strong>
+                                </div>
+                                <div className="text-dark">
+                                    Role: <strong>{userrole.charAt(0).toUpperCase() + userrole.slice(1)}</strong>
+                                </div>
+                            </span>
+                        )}
+                    </div>
                 </div>
             </header>
         </>
