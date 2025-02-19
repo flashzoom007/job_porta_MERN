@@ -1,6 +1,6 @@
 const express = require('express');
 const { Home } = require('../controllers/auth');
-const { getAllRecords, userCreate, Login, deleteUser, updateUser, updateShowUser, uploadFile, logLogin, deleteAllUsers } = require('../controllers/modelController');
+const { getAllRecords, userCreate, Login, deleteUser, updateUser, updateShowUser, uploadFile, logLogin, deleteAllUsers, getShowJobUsers } = require('../controllers/modelController');
 const { processPlaylist } = require('../controllers/playlistDownload');
 const { createComapny, deleteCompany, updateCompany, deleteCompanyProfile, createCompanyProfile, updateCompanyProfile, deleteJobProfile, createJobPosition, updateJobPosition, deleteAllJobsPositions, deleteAllCompanys, deleteAllJobsprofiles, createNewJob, deleteCreateJob, deleteAllCreateJob,updateNewJob } = require('../controllers/companyController')
 const router = express.Router();
@@ -9,6 +9,7 @@ const router = express.Router();
 router.route('/').get(Home);
 router.route('/update-show-users').get(updateShowUser);
 router.get('/show-:table', getAllRecords);
+router.get('/all-jobs-display', getShowJobUsers);
 
 // Post API
 router.route('/create-users').post(userCreate);

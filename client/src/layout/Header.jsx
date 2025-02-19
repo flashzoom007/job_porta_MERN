@@ -7,7 +7,7 @@ const Header = () => {
     const navigate = useNavigate();
     const isAuthenticated = localStorage.getItem("userToken");
     const userRole = localStorage.getItem("userRole");
-
+    const [username, setUsername] = useState("");
     const dropdownRef = useRef(null);
     const companyDropdownRef = useRef(null);
 
@@ -37,44 +37,59 @@ const Header = () => {
         };
     }, []);
 
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("userName");
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    }, []);
+
+    // Only admin and recruiter can see
+    useEffect(() => {
+        if (['company-name', 'company-Profile', 'job-position'].includes(window.location.pathname) && userRole !== "admin" && userRole !== "recruiter") {
+            navigate("/");
+        }
+    }, [userRole, navigate]);
+
     return (
         <>
             <header className="bg-light py-3">
                 <div className="container d-flex flex-wrap justify-content-between align-items-center">
-                    <a href="/" className="d-flex align-items-center text-dark text-decoration-none mb-3 mb-md-0">
+                    <a href="/" className="d-flex align-items-center text-dark text-decoration-none">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
                             className="bi bi-box-seam bg-primary text-white rounded-circle p-2" width="40" height="40"
                             viewBox="0 0 24 24">
                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
                         </svg>
-                        <span className="ms-3 fs-4">Home</span>
                     </a>
 
                     <nav className="nav nav-menu">
                         <Link to="/">Home</Link>
                         {isAuthenticated && userRole === "admin" && <Link to="/users">All Users</Link>}
-                        <Link to="/job">Register New</Link>
+                        <Link to="/job">New User Create</Link>
                         <Link to="/show-jobs">Show All Jobs</Link>
 
                         {/* Company Dropdown */}
-                        <div className="nav-item dropdown" ref={companyDropdownRef}>
-                            <button
-                                className="nav-link dropdown-toggle btn btn-light"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setCompanyOpen((prev) => !prev);
-                                }}
-                            >
-                                Company
-                            </button>
-                            {companyOpen && (
-                                <ul className="dropdown-menu show position-absolute">
-                                    <li><Link to="/company-name" className="dropdown-item">All Company</Link></li>
-                                    <li><Link to="/company-Profile" className="dropdown-item">Company Profile</Link></li>
-                                    <li><Link to="/job-position" className="dropdown-item">Job Positions</Link></li>
-                                </ul>
-                            )}
-                        </div>
+                        {(userRole === "admin" || userRole === "recruiter") && (
+                            <div className="nav-item dropdown" ref={companyDropdownRef}>
+                                <button
+                                    className="nav-link dropdown-toggle btn btn-light"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setCompanyOpen((prev) => !prev);
+                                    }}
+                                >
+                                    Company
+                                </button>
+                                {companyOpen && (
+                                    <ul className="dropdown-menu show position-absolute">
+                                        <li><Link to="/company-name" className="dropdown-item">All Company</Link></li>
+                                        <li><Link to="/company-Profile" className="dropdown-item">Company Profile</Link></li>
+                                        <li><Link to="/job-position" className="dropdown-item">Job Positions</Link></li>
+                                    </ul>
+                                )}
+                            </div>
+                        )}
 
                         {/* Unknown Dropdown */}
                         <div className="nav-item dropdown" ref={dropdownRef}>
@@ -109,6 +124,12 @@ const Header = () => {
                             </svg>
                         </button>
                     </Link>
+
+                    {/* {isAuthenticated && (
+                        <div className="text-dark">
+                            Welcome, <strong>{username}</strong>
+                        </div>
+                    )} */}
                 </div>
             </header>
         </>
@@ -116,3 +137,4 @@ const Header = () => {
 };
 
 export default Header;
+

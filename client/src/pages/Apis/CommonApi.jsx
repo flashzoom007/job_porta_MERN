@@ -427,9 +427,26 @@ export const getAllJobsCreated = async (setCompanyShow, setShowModal) => {
         const response = await axios.get(apiUrl);
 
         const responseData = response.data;
-
         if (responseData.statusCode === 200) {
             setCompanyShow(responseData.users);
+            setShowModal(false);
+        } else {
+            toast.error(responseData.message);
+        }
+    } catch (error) {
+        // toast.error("Error fetching companies. Check console for details.");
+    }
+};
+
+// show all jobs created
+export const getShowJobUsers = async (setCompanyShow, setShowModal) => {
+    try {
+        const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/all-jobs-display`;
+        const response = await axios.get(apiUrl);
+
+        const responseData = response.data;
+        if (responseData.statusCode === 200) {
+            setCompanyShow(responseData.jobs);
             setShowModal(false);
         } else {
             toast.error(responseData.message);

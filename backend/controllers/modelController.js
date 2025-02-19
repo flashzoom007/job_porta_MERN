@@ -22,9 +22,6 @@ const getAllRecords = async (req, res) => {
         if (!validTables.includes(tableName)) {
             return res.json({ message: 'Invalid table name', statusCode: 500 });
         }
-
-        // const query = 'SELECT * FROM `company` WHERE 1;';
-
         const query = `SELECT * FROM \`${tableName}\` WHERE 1;`;
         conn.query(query, (err, results) => {
             if (err) {
@@ -34,6 +31,20 @@ const getAllRecords = async (req, res) => {
         });
     } catch (error) {
         res.json({ message: 'Internal server error on getAllRecords', statusCode: 500 });
+    }
+}
+
+const getShowJobUsers = async (req, res) => {
+    try {  
+        const query = `SELECT j.*, u.name AS posted_by_name FROM job_create_list j LEFT JOIN users u ON j.posted_by = u.id;`
+        conn.query(query, (err, results) => {
+            if (err) {
+                return res.status(500).json({ message: 'Internal server error', statusCode: 500 });
+            }            
+            res.json({ jobs: results, statusCode: 200 });
+        });
+    } catch (err) {
+        res.json({ message: 'Internal server error on login user', statusCode: 500 });
     }
 }
 
@@ -62,7 +73,7 @@ const Login = async (req, res) => {
         const token = jwt.sign(
             { id: user.id, email: user.email, role: user.role },
             process.env.JWT_SECRET,
-            { expiresIn: "1h" }  // Token expires in 1 hour
+            // { expiresIn: "1h" }  // Token expires in 1 hour
         );
 
         return res.json({
@@ -135,7 +146,7 @@ const deleteAllUsers = async (req, res) => {
             res.json({ message: 'All Users are deleted successfully', statusCode: 200 });
         })
 
-    } catch (err) {        
+    } catch (err) {
         res.json({ message: 'Internal server error on delete user', statusCode: 500 });
     }
 }
@@ -150,7 +161,8 @@ const updateUser = async (req, res) => {
         }
 
         const query = `UPDATE users SET name=?, password=?, role=?, file_upload=?, number=?, created_at=? WHERE id = ?`;
-        const values = [name, password, role, file_upload, number, created_at, id];
+        const hashPassword = await bcrypt.hash(password, 10);
+        const values = [name, hashPassword, role, file_upload, number, created_at, id];
 
         const [result] = await conn.promise().query(query, values);
 
@@ -224,5 +236,5 @@ const logLogin = (req, res) => {
 };
 
 module.exports = {
-    getAllRecords, userCreate, Login, deleteUser, updateUser, updateShowUser, uploadFile, logLogin, deleteAllUsers
+    getAllRecords, getShowJobUsers, userCreate, Login, deleteUser, updateUser, updateShowUser, uploadFile, logLogin, deleteAllUsers
 };

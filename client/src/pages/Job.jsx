@@ -136,7 +136,7 @@ const Job = () => {
                   <option value="">Select Role</option>
                   <option value="student">Student</option>
                   <option value="recruiter">Recruiter</option>
-                  <option value="admin">Admin</option>
+                  {/* <option value="admin">Admin</option> */}
                 </select>
                 {errors.role && (
                   <div className="invalid-feedback">Select any of role first</div>

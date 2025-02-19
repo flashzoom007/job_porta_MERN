@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { getAllCompany, getAllJobPosition } from '../Apis/CommonApi';
 
 const CreateJob = ({ onSubmit, isEditMode, closeModal, selectedJob }) => {
-  const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
+  const { register, watch, handleSubmit, setValue, formState: { errors }, reset } = useForm();
 
   const [companies, setCompanies] = useState([]);
   const [positions, setPositions] = useState([]);
@@ -31,13 +31,17 @@ const CreateJob = ({ onSubmit, isEditMode, closeModal, selectedJob }) => {
           <label className="form-label">Company Name</label>
           <select
             className="form-select"
-            {...register('company_name', { required: 'Job Type is required.' })}
+            {...register("company_name", { required: "Company Name is required." })}
+            value={watch("company_name", selectedJob?.company_name || "")} 
           >
-            <option value="">Select Job Type</option>
+            <option value="">Select Company</option>
             {companies.map((props) => (
-              <option key={props.id} value={props.name}>{props.name}</option>
+              <option key={props.id} value={props.name}>
+                {props.name}
+              </option>
             ))}
           </select>
+
           {errors.company_name && <p className="text-danger">{errors.company_name?.message}</p>}
         </div>
 
@@ -46,6 +50,7 @@ const CreateJob = ({ onSubmit, isEditMode, closeModal, selectedJob }) => {
           <select
             className="form-select"
             {...register('role', { required: 'Job Type is required.' })}
+            value={watch("role", selectedJob?.role || "")}
           >
             <option value="">Select Job Type</option>
             {positions.map((props) => (
@@ -89,7 +94,8 @@ const CreateJob = ({ onSubmit, isEditMode, closeModal, selectedJob }) => {
           <label className="form-label">Job Type</label>
           <select
             className="form-select"
-            {...register('job_type', { required: 'Job Type is required.' })}
+            {...register("job_type", { required: 'Job Type is required.' })}
+            defaultValue={selectedJob?.job_type || ""}
           >
             <option value="">Select Job Type</option>
             <option value="Full-time">Full-time</option>
@@ -98,6 +104,7 @@ const CreateJob = ({ onSubmit, isEditMode, closeModal, selectedJob }) => {
             <option value="Contract">Contract</option>
           </select>
           {errors.job_type && <p className="text-danger">{errors.job_type?.message}</p>}
+
         </div>
 
         <div className="mb-3">
@@ -108,6 +115,16 @@ const CreateJob = ({ onSubmit, isEditMode, closeModal, selectedJob }) => {
             {...register('experience', { required: 'Experience is required.' })}
           />
           {errors.experience && <p className="text-danger">{errors.experience?.message}</p>}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">location</label>
+          <input
+            type="text"
+            className="form-control"
+            {...register('location', { required: 'location is required.' })}
+          />
+          {errors.location && <p className="text-danger">{errors.location?.message}</p>}
         </div>
 
         <div className="d-flex justify-content-end gap-2">

@@ -26,6 +26,7 @@ table-name:
     -- salary
     -- job_type ENUM('Full-time', 'Part-time', 'Remote', 'Contract'),
     -- experience
+    -- location
     -- posted_by  (fk- users->name)  
     -- created_at
 
@@ -53,4 +54,4 @@ table-name:
     -- position-name  (fk - positions_desc->open_postions)
     -- apply-date
     -- resume
-    -- posted_by              
+    -- posted_by

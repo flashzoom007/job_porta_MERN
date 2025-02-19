@@ -257,8 +257,8 @@ const deleteAllJobsPositions = async (req, res) => {
 // create company profile
 const createNewJob = async (req, res) => {
     try {
-        const { company_name, role, description, skills, salary, job_type, experience, posted_by } = req.body;
-        if (!company_name || !role || !description || !skills || !salary || !job_type || !experience) {
+        const { company_name, role, description, skills, salary, job_type, experience, location, posted_by } = req.body;
+        if (!company_name || !role || !description || !skills || !salary || !job_type || !experience || !location) {
             return res.json({ message: "All fields are required", statusCode: 400 });
         }
 
@@ -267,10 +267,10 @@ const createNewJob = async (req, res) => {
         conn.query(checkSql, [company_name], (err, results) => {
             const insertSql = `
                     INSERT INTO job_create_list 
-                    (company_name, role, description, skills, salary, job_type, experience, posted_by, created_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`;
+                    (company_name, role, description, skills, salary, job_type, experience,location, posted_by, created_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?,?, ?, NOW())`;
 
-            conn.query(insertSql, [company_name, role, description, skills, salary, job_type, experience, posted_by], (err, result) => {
+            conn.query(insertSql, [company_name, role, description, skills, salary, job_type, experience, location, posted_by], (err, result) => {
                 return res.json({ message: "Job created successfully", statusCode: 200, data: result });
             });
         });
@@ -283,10 +283,10 @@ const createNewJob = async (req, res) => {
 // update new company profile
 const updateNewJob = async (req, res) => {
     try {
-        const { id, company_name, role, description, skills, salary, job_type, experience, posted_by } = req.body;
-        console.log('posted_by', posted_by);
+        const { id, company_name, role, description, skills, salary, job_type, experience, location, posted_by } = req.body;
+        // console.log('posted_by', posted_by);
 
-        if (!id || !company_name || !role || !description || !skills || !salary || !job_type || !experience || !posted_by) {
+        if (!id || !company_name || !role || !description || !skills || !salary || !job_type || !experience || !posted_by || !location) {
             return res.json({ message: "All fields are required", statusCode: 400 });
         }
 
@@ -308,8 +308,8 @@ const updateNewJob = async (req, res) => {
                     return res.json({ message: "Job profile not found", statusCode: 404 });
                 }
 
-                const sql = "UPDATE `job_create_list` SET company_name=?, role=?, description=?, skills=?, salary=?, job_type=?, experience=?, posted_by=? WHERE id = ?";
-                conn.query(sql, [company_name, role, description, skills, salary, job_type, experience, posted_by, id], (err, result) => {
+                const sql = "UPDATE `job_create_list` SET company_name=?, role=?, description=?, skills=?, salary=?, job_type=?, experience=?, location=?, posted_by=? WHERE id = ?";
+                conn.query(sql, [company_name, role, description, skills, salary, job_type, experience, location, posted_by, id], (err, result) => {
                     if (err) {
                         console.log(err)
                         return res.json({ message: "Failed to update job profile", statusCode: 500, error: err.message });
