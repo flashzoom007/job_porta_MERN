@@ -6,6 +6,7 @@ import { getAllCompany, deleteCompany, deleteAllCompanys } from '../Apis/CommonA
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { IoIosCreate } from "react-icons/io";
+import { FaAngleRight } from "react-icons/fa6";
 
 const Name = () => {
     const navigate = useNavigate();
@@ -24,9 +25,6 @@ const Name = () => {
 
     useEffect(() => {
         getAllCompany(setCompanyShow, setShowModal);
-        getAllCompany((data) => {
-            console.log(data)
-        })
     }, [refresh]);
 
     const onSubmit = async (data) => {
@@ -92,7 +90,7 @@ const Name = () => {
                     }}
                     className="btn btn-outline-primary mb-3"
                 >
-                    Add Company
+                    Add New <FaAngleRight />
                 </button>
                 <button
                     onClick={() => {
@@ -100,7 +98,7 @@ const Name = () => {
                     }}
                     className="btn btn-outline-danger mb-3"
                 >
-                    Delete All Company
+                    Delete All 
                 </button>
             </div>
 

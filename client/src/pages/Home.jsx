@@ -1,6 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
-import { FaAngleLeft } from "react-icons/fa";
 
 const Home = () => {
   return (
@@ -10,7 +8,6 @@ const Home = () => {
           <h1>Home Page</h1>         
         </span>
       </div>
-
     </>
   )
 }

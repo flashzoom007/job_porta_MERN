@@ -13,6 +13,7 @@ import YoutubePlaylist from "../pages/RandomPages/YoutubePlaylist";
 import CompanyName from "../pages/Company/Name";
 import CompanyProfile from "../pages/Company/Profile";
 import JobPosition from "../pages/Company/JobPosition";
+import ShowJobs from "../pages/Job/Show";
 
 const Index = () => {
   return (
@@ -27,6 +28,7 @@ const Index = () => {
         {/* Job */}
         <Route path="/job-create" element={<JobCreate />} />
         <Route path="/job" element={<Job />} />
+        <Route path="/show-jobs" element={<ShowJobs />} />
 
         {/* Company */}
         <Route path="/company-name" element={<CompanyName />} />

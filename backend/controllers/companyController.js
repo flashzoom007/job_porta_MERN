@@ -71,6 +71,7 @@ const deleteAllCompanys = async (req, res) => {
 
 //! *************** Company API End 
 
+
 //! *************** Company Profile API start 
 // Delete company Profile
 const deleteCompanyProfile = async (req, res) => {
@@ -229,7 +230,7 @@ const updateJobPosition = async (req, res) => {
         const sql = "UPDATE `job_position` SET name=? WHERE id=?";
 
         conn.query(sql, [name, id], (err, result) => {
-            if(name.length>0){
+            if (name.length > 0) {
                 return res.json({ message: "Job profile already exist...! Try other one.", statusCode: 100 });
             }
             res.json({ message: "Job Profile updated successfully.", statusCode: 200 });
@@ -252,6 +253,113 @@ const deleteAllJobsPositions = async (req, res) => {
 
 //! *************** Job Position API End
 
+//! *************** Crate Job Start
+// create company profile
+const createNewJob = async (req, res) => {
+    try {
+        const { company_name, role, description, skills, salary, job_type, experience, posted_by } = req.body;
+        if (!company_name || !role || !description || !skills || !salary || !job_type || !experience) {
+            return res.json({ message: "All fields are required", statusCode: 400 });
+        }
+
+        // Check if the company_name already exists
+        const checkSql = "SELECT id FROM `job_create_list` WHERE company_name = ?";
+        conn.query(checkSql, [company_name], (err, results) => {
+            const insertSql = `
+                    INSERT INTO job_create_list 
+                    (company_name, role, description, skills, salary, job_type, experience, posted_by, created_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`;
+
+            conn.query(insertSql, [company_name, role, description, skills, salary, job_type, experience, posted_by], (err, result) => {
+                return res.json({ message: "Job created successfully", statusCode: 200, data: result });
+            });
+        });
+
+    } catch (error) {
+        return res.json({ message: "Internal server error", statusCode: 500, error: error.message });
+    }
+};
+
+// update new company profile
+const updateNewJob = async (req, res) => {
+    try {
+        const { id, company_name, role, description, skills, salary, job_type, experience, posted_by } = req.body;
+        console.log('posted_by', posted_by);
+
+        if (!id || !company_name || !role || !description || !skills || !salary || !job_type || !experience || !posted_by) {
+            return res.json({ message: "All fields are required", statusCode: 400 });
+        }
+
+        const checkCompanySql = "SELECT name FROM `company` WHERE name = ?";
+        conn.query(checkCompanySql, [company_name], (err, companyResults) => {
+            if (err) {
+                return res.json({ message: "Database error", statusCode: 500, error: err.message });
+            }
+            if (companyResults.length === 0) {
+                return res.json({ message: `Company '${company_name}' does not exist`, statusCode: 400 });
+            }
+
+            const checkSql = "SELECT id FROM `job_create_list` WHERE id = ?";
+            conn.query(checkSql, [id], (err, jobResults) => {
+                if (err) {
+                    return res.json({ message: "Database error", statusCode: 500, error: err.message });
+                }
+                if (jobResults.length === 0) {
+                    return res.json({ message: "Job profile not found", statusCode: 404 });
+                }
+
+                const sql = "UPDATE `job_create_list` SET company_name=?, role=?, description=?, skills=?, salary=?, job_type=?, experience=?, posted_by=? WHERE id = ?";
+                conn.query(sql, [company_name, role, description, skills, salary, job_type, experience, posted_by, id], (err, result) => {
+                    if (err) {
+                        console.log(err)
+                        return res.json({ message: "Failed to update job profile", statusCode: 500, error: err.message });
+                    }
+                    res.json({ message: "Job Profile updated successfully.", statusCode: 200 });
+                });
+            });
+        });
+
+    } catch (error) {
+        return res.json({ message: "Internal server error on Job profile update", statusCode: 500, error: error.message });
+    }
+};
+
+// Delete company Profile
+const deleteCreateJob = async (req, res) => {
+    try {
+        const companyId = req.params.id;
+
+        if (!companyId) {
+            res.json({ message: 'Job id is required', statusCode: 400 });
+        }
+        const query = `DELETE FROM job_create_list WHERE id = ?`;
+        conn.query(query, [companyId], (err, result) => {
+            if (result.affectedRows === 0) {
+                res.json({ message: 'Job not found', statusCode: 404 });
+            } else {
+                res.json({ message: 'Job deleted successfully', statusCode: 200 });
+            }
+        });
+
+    } catch (err) {
+        res.json({ message: 'Internal server error on Job Delete', statusCode: 500 });
+    }
+}
+
+// Delete All Users
+const deleteAllCreateJob = async (req, res) => {
+    try {
+        const query = `DELETE FROM job_create_list WHERE 1`;
+        conn.query(query, (err, result) => {
+            res.json({ message: 'All Jobs are deleted successfully', statusCode: 200 });
+        })
+
+    } catch (err) {
+        res.json({ message: 'Internal server error on delete Jobs', statusCode: 500 });
+    }
+}
+//! *************** Crate Job End
+
 module.exports = {
-    createComapny, deleteCompany, updateCompany, deleteCompanyProfile, createCompanyProfile, updateCompanyProfile, deleteJobProfile, createJobPosition, updateJobPosition, deleteAllJobsPositions, deleteAllCompanys, deleteAllJobsprofiles
+    createComapny, deleteCompany, updateCompany, deleteCompanyProfile, createCompanyProfile, updateCompanyProfile, deleteJobProfile, createJobPosition, updateJobPosition, deleteAllJobsPositions, deleteAllCompanys, deleteAllJobsprofiles, createNewJob, updateNewJob, deleteCreateJob, deleteAllCreateJob
 };

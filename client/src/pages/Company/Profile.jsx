@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { getAllCompanyProfile, deleteCompanyProfile, getAllCompany, handleFileChange, handleUpload, deleteAllProfiles } from '../Apis/CommonApi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaAngleRight } from "react-icons/fa6";
 
 const Profile = () => {
     const [companyShow, setCompanyShow] = useState([]);
@@ -105,7 +106,7 @@ const Profile = () => {
                     }}
                     className="btn btn-outline-primary mb-3"
                 >
-                    Add Profile
+                    Add New <FaAngleRight />
                 </button>
                 <button
                     onClick={() => {
@@ -113,7 +114,7 @@ const Profile = () => {
                     }}
                     className="btn btn-outline-danger mb-3"
                 >
-                    Delete All Profile
+                    Delete All
                 </button>
             </div>
 
@@ -122,13 +123,13 @@ const Profile = () => {
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">{isEditMode ? 'Edit Company' : 'Add Company'}</h5>
+                                <h5 className="modal-title">{isEditMode ? 'Edit Company Profile' : 'Add Company Profile'}</h5>
                                 <button className="btn-close" onClick={closeModal}></button>
                             </div>
                             <div className="modal-body">
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mb-3">
-                                        <label className="form-label">Company Name</label>
+                                        <label className="form-label">  Name</label>
                                         <select className="form-control" {...register('name', { required: true })}>
                                             <option value="">Select a company</option>
                                             {companyOptions.map((company) => (

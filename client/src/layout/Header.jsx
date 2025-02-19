@@ -54,6 +54,7 @@ const Header = () => {
                         <Link to="/">Home</Link>
                         {isAuthenticated && userRole === "admin" && <Link to="/users">All Users</Link>}
                         <Link to="/job">Register New</Link>
+                        <Link to="/show-jobs">Show All Jobs</Link>
 
                         {/* Company Dropdown */}
                         <div className="nav-item dropdown" ref={companyDropdownRef}>

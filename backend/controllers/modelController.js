@@ -13,7 +13,7 @@ const getAllRecords = async (req, res) => {
             'company',
             'positions_desc',
             'company_profile',
-            'job_open_list',
+            'job_create_list',
             'users',
             'job_apply_list',
             'job_position'

@@ -18,12 +18,20 @@ div#root {
   color: #0d6efd;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: 700;
   font-family: "Afacad Flux", serif;
 }
 
-p, a, span, ul, ol, li {
+p,
+a,
+span,
+ul,
+ol,
+li {
   font-size: 1rem !important;
   color: #000 !important;
   line-height: 1.5rem;
@@ -135,6 +143,19 @@ nav.nav.nav-menu a {
   color: #000;
   text-transform: capitalize;
 }
+nav.nav.nav-menu a:hover {
+  border-color: #0d6efd;
+  border-style: solid;
+  border-width: 0 0 3px 0;
+  transition: all 0.1s ease-in-out;
+}
+nav.nav.nav-menu .dropdown-menu.show {
+  overflow: hidden;
+}
+nav.nav.nav-menu .dropdown-menu.show a {
+  margin: 0;
+  padding: 0.5rem 1rem;
+}
 
 .form-container {
   display: flex;
@@ -158,4 +179,8 @@ nav.nav.nav-menu a {
 }
 .form-container .invalid-feedback {
   display: block;
+}
+
+.table th {
+  min-width: 100px !important;
 }/*# sourceMappingURL=style.css.map */

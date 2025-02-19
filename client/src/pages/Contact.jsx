@@ -26,6 +26,7 @@ function Contact() {
                             <label>Name: </label>
                             <div>
                                 <input
+                                    className="form-control"
                                     type="text"
                                     {...register("fullname",
                                         { required: true },
@@ -39,6 +40,7 @@ function Contact() {
                             <label>Number: </label>
                             <div>
                                 <input
+                                    className="form-control"
                                     type="number"
                                     {...register("number", {
                                         required: true,
@@ -51,7 +53,7 @@ function Contact() {
                                             message: 'Phone Number max 13 digits long'
                                         }
                                     })} />
-                                    {/* <InputMask id="ssn" mask="999-99-9999" placeholder="999-99-9999"></InputMask> */}
+                                {/* <InputMask id="ssn" mask="999-99-9999" placeholder="999-99-9999"></InputMask> */}
 
                                 {errors.number && <span className={errors.message ? '' : 'text-danger'}>{errors.number.message}</span>}
                             </div>
@@ -60,6 +62,7 @@ function Contact() {
                             <label>Email: </label>
                             <div>
                                 <input
+                                    className="form-control"
                                     type="email"
                                     {...register("email", { required: true })}
                                 />
@@ -68,11 +71,11 @@ function Contact() {
                         </div>
                         <div className='main-section'>
                             <label>Gender: </label>
-                            <select {...register("gender")}>
-                                <option value="female">female</option>
-                                <option value="male">male</option>
-                                <option value="other">other</option>
-                            </select>
+                            <select className="form-select" {...register("gender")}>
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                                <option value="other">Other</option>
+                            </select>               
                         </div>
                         <div>
                             <input type="submit" className="btn btn-outline-primary" disabled={isSubmitting} value={isSubmitting ? 'Submitting' : 'Submit'} />

@@ -93,3 +93,5 @@ Update versions:
 [2.3] = New compnay page and profile, sync with databse with api, working properly
 
 [2.4] = Up to company, company profile, position add - complete
+
+[2.5] = CRUD on New job role done

@@ -16,13 +16,18 @@ table-name:
     -- url
     -- image
 
-4.job_open_list
+4.job_create_list
 
     -- id (pk)
     -- company_name(fk - company->name)
-    -- position_desc
-    -- position_skills
-    -- position_open_date
+    -- role (fk - job_position->name)
+    -- description
+    -- skills    
+    -- salary
+    -- job_type ENUM('Full-time', 'Part-time', 'Remote', 'Contract'),
+    -- experience
+    -- posted_by  (fk- users->name)  
+    -- created_at
 
 5.users
     -- id (pk)
@@ -34,7 +39,13 @@ table-name:
     -- number
     -- created_at
 
-6.job_apply_list
+6.job_position (store all positions)
+
+    -- id (pk)
+    -- name
+    -- created
+    
+7.job_apply_list (users apply for job details)
 
     -- id (pk)
     -- company_name (fk - company->name)
@@ -42,10 +53,4 @@ table-name:
     -- position-name  (fk - positions_desc->open_postions)
     -- apply-date
     -- resume
-    -- created_at
-
-7.job_position (store all positions)
-
-    -- id (pk)
-    --name
-    -- created
+    -- posted_by              

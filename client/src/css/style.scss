@@ -9,6 +9,7 @@ $clr-primary: #0d6efd;
 body {
     font-family: "Afacad Flux", serif;
 }
+
 div#root {
     width: 100%;
 }
@@ -26,16 +27,27 @@ div#root {
         color: $clr-primary
     }
 }
-h1, h2, h3, h4{
+
+h1,
+h2,
+h3,
+h4 {
     font-weight: 700;
     font-family: "Afacad Flux", serif;
 }
-p, a, span, ul, ol, li{
+
+p,
+a,
+span,
+ul,
+ol,
+li {
     font-size: 1rem !important;
     color: $dark !important;
     line-height: 1.5rem;
     font-family: "Afacad Flux", serif;
 }
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -150,6 +162,22 @@ nav.nav.nav-menu {
         font-size: 1rem;
         color: $dark;
         text-transform: capitalize;
+
+        &:hover {
+            border-color: $clr-primary;
+            border-style: solid;
+            border-width: 0 0 3px 0;
+            transition: all 0.1s ease-in-out;
+        }
+    }
+
+    .dropdown-menu.show {
+        overflow: hidden;
+
+        a {
+            margin: 0;
+            padding: 0.5rem 1rem;
+        }
     }
 }
 
@@ -188,3 +216,6 @@ nav.nav.nav-menu {
 }
 
 //******** Login End ********//
+.table th {
+    min-width: 100px !important;
+}

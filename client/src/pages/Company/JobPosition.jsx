@@ -5,6 +5,7 @@ import axios from 'axios';
 import { getAllJobPosition, deleteJobPosition, deleteAllJobs } from '../Apis/CommonApi';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { FaAngleRight } from "react-icons/fa6";
 
 const JobPosition = () => {
     const navigate = useNavigate();
@@ -89,7 +90,7 @@ const JobPosition = () => {
                     }}
                     className="btn btn-outline-primary mb-3"
                 >
-                    Add New Job
+                    Add New <FaAngleRight />
                 </button>
                 <button
                     onClick={() => {
@@ -97,7 +98,7 @@ const JobPosition = () => {
                     }}
                     className="btn btn-outline-danger mb-3"
                 >
-                    Delete All Jobs
+                    Delete All
                 </button>
             </div>
 
@@ -106,18 +107,18 @@ const JobPosition = () => {
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">{isEditMode ? 'Edit Company' : 'Add Company'}</h5>
+                                <h5 className="modal-title">{isEditMode ? 'Edit Profile' : 'Add Profile'}</h5>
                                 <button className="btn-outline-close" onClick={closeModal}></button>
                             </div>
                             <div className="modal-body">
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mb-3">
-                                        <label className="form-label">Company Name</label>
+                                        <label className="form-label">Profile Name</label>
                                         <input
                                             className="form-control"
                                             {...register('name', { required: true })}
                                         />
-                                        {errors.name && <p className="text-danger">Company name is required.</p>}
+                                        {errors.name && <p className="text-danger">Name is required.</p>}
                                     </div>
                                     <div className="d-flex justify-content-end gap-2">
                                         <button type="submit" className="btn btn-outline-success">
