@@ -138,6 +138,7 @@ export const handleFileChange = (e) => {
         file = selectedFile; // Set the selected file to the file variable
         toast.success("File selected successfully.");
     }
+    // setSelectedFile(file);
 };
 
 // Function to handle file upload

@@ -83,7 +83,7 @@ const JobDescription = ({ setTabIndex }) => {
                             </div>
                         ))}
                     </div>
-
+                                                                                                                   
                     {/* Responsibilities & Qualifications Section */}
                     <div className="inner_desc mt-3">
                         <div className="d-flex gap-3">

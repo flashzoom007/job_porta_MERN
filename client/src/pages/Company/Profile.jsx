@@ -152,11 +152,12 @@ const Profile = () => {
                                         <input className="form-control" {...register('url', { required: true })} />
                                         {errors.url && <p className="text-danger">URL is required.</p>}
                                     </div>
+                                    
                                     <div className="mb-3">
                                         <label className="form-label">Upload Photo</label>
                                         <input
                                             type="file"
-                                            accept="image/*"
+                                            accept="image/*"  
                                             {...register('photos',
                                                 { required: true }
                                             )}

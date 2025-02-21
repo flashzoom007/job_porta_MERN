@@ -722,3 +722,6 @@
 2025-02-19 18:22:01 [INFO]: [User: Guest | ID: NA] GET /show-job_position - ::1
 2025-02-19 18:22:01 [INFO]: [User: Guest | ID: NA] GET /show-company - ::1
 2025-02-19 18:22:01 [INFO]: [User: Guest | ID: NA] GET /show-job_position - ::1
+2025-02-19 18:23:53 [INFO]: [User: Guest | ID: NA] GET /all-jobs-display - ::1
+2025-02-19 18:23:53 [INFO]: [User: Guest | ID: NA] GET /all-jobs-display - ::1
+2025-02-19 18:23:54 [INFO]: [User: Guest | ID: NA] GET /all-jobs-display - ::1

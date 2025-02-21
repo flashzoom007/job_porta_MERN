@@ -135,18 +135,33 @@ const updateCompanyProfile = async (req, res) => {
         const { id, name, description, url, image } = req.body;
 
         if (!name || !description || !url || !image) {
-            return res.json({ message: "Company profile Details are required", statusCode: 400 });
+            return res.json({ message: "Company profile details are required", statusCode: 400 });
         }
-        const sql = "UPDATE `company_profile` SET name=?,description=?,url=?,image=? WHERE id=?";
 
-        conn.query(sql, [name, description, url, image, id], (err, result) => {
-            if (name.length > 0) {
-                return res.json({ message: "Company Profile Already exist..!try other name.", statusCode: 100 });
+        // Check if the name already exists (excluding the current ID)
+        const checkSql = "SELECT id FROM `company_profile` WHERE name = ? AND id != ?";
+        conn.query(checkSql, [name, id], (err, results) => {
+            if (err) {
+                return res.json({ message: "Database error", statusCode: 500 });
             }
-            return res.json({ message: "Company Profile updated successfully.", statusCode: 200 });
+            if (results.length > 0) {
+                return res.json({ message: "Company Profile Already exists! Try another name.", statusCode: 100 });
+            }
+
+            // Proceed with the update if no duplicate name found
+            const updateSql = "UPDATE `company_profile` SET name=?, description=?, url=?, image=? WHERE id=?";
+            conn.query(updateSql, [name, description, url, image, id], (err, result) => {
+                if (err) {
+                    return res.json({ message: "Database error", statusCode: 500 });
+                }
+                return res.json({ message: "Company Profile updated successfully.", statusCode: 200 });
+            });
         });
-    } catch (error) { return res.json({ message: "Internal server error on create company", statusCode: 500 }); }
+    } catch (error) {
+        return res.json({ message: "Internal server error on updating company", statusCode: 500 });
+    }
 };
+
 
 // Delete All Users
 const deleteAllJobsprofiles = async (req, res) => {
