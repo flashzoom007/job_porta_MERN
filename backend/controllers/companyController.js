@@ -162,7 +162,6 @@ const updateCompanyProfile = async (req, res) => {
     }
 };
 
-
 // Delete All Users
 const deleteAllJobsprofiles = async (req, res) => {
     try {

@@ -14,12 +14,13 @@ import CompanyName from "../pages/Company/Name";
 import CompanyProfile from "../pages/Company/Profile";
 import JobPosition from "../pages/Company/JobPosition";
 import ShowJobs from "../pages/Job/Show";
+import ApplyForJob from "../pages/Job/ApplyForJob";
 
 const Index = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />        
+        <Route path="/" element={<Home />} />
         <Route path="/users" element={<PrivateRoute props={<Users />} />} />
         <Route path="/users/update-user/:id" element={<UpdateUser />} />
         <Route path="/contact" element={<Contact />} />
@@ -35,10 +36,13 @@ const Index = () => {
         <Route path="/company-profile" element={<CompanyProfile />} />
         <Route path="/job-position" element={<JobPosition />} />
 
+        {/* Users  */}
+        <Route path="/job-apply-list" element={<ApplyForJob />} />
+
         {/* Random  */}
-        <Route path="/charts" element={<Chart />} />      
+        <Route path="/charts" element={<Chart />} />
         <Route path="/youtube-playlist" element={<YoutubePlaylist />} />
-        
+
         <Route path="*" element={<Error />} />
       </Routes>
     </>

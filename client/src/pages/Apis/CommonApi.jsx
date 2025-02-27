@@ -514,3 +514,83 @@ export const deleteAllCreatedJobs = async () => {
     }
 }
 //!  Jobs End
+
+//! Apply for Start
+// show all jobs created
+export const getAllApplyForJob = async (setCompanyShow, setShowModal) => {
+    try {
+        const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/show-job_apply_list`;
+        const response = await axios.get(apiUrl);
+
+        const responseData = response.data;
+        if (responseData.statusCode === 200) {
+            setCompanyShow(responseData.users);
+            setShowModal(false);
+        } else {
+            toast.error(responseData.message);
+        }
+    } catch (error) {
+        // toast.error("Error fetching companies. Check console for details.");
+    }
+};
+
+// Delete single created job
+export const deleteApplyForJob = async (companyId) => {
+    try {
+        const confirmDelete = window.confirm("Are you sure you want to delete this company?");
+        if (confirmDelete) {
+            const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/delete-apply-for-job/${companyId}`;
+            const response = await fetch(apiUrl, {
+                method: "DELETE",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await response.json();
+            if (data.statusCode === 200) {
+                toast.success(data.message);
+                // window.location.reload();
+            } else {
+                toast.error(data.message);
+            }
+        } else {
+            toast.info("Company deletion cancelled.");
+            return { statusCode: 400, message: "Deletion cancelled by user" };
+        }
+
+    } catch (error) {
+        toast.error("An unexpected error occurred while deleting.");
+        return { statusCode: 500, message: "Error deleting user" };
+    }
+};
+
+// delete All created job
+export const deleteAllApplyForJob = async () => {
+    const isConfirmed = window.confirm("Are you sure you want to delete all users?");
+    if (!isConfirmed) {
+        return;
+    }
+    const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/delete-all-apply-for-job`;
+    const response = await fetch(apiUrl, {
+        method: "DELETE",
+        "Content-Type": "application/json"
+    });
+
+    const data = await response.json();
+
+    if (data.statusCode === 200) {
+        toast.success(data.message);
+        setTimeout(() => {
+            window.location.reload();
+        });
+        return data.message;
+    } else {
+        toast.error(data.message);
+        return data.message;
+    }
+}
+
+
+//! Apply for End

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [companyOpen, setCompanyOpen] = useState(false);
+    const [userOpen, setuserOpen] = useState(false);
     const navigate = useNavigate();
     const isAuthenticated = localStorage.getItem("userToken");
     const userRole = localStorage.getItem("userRole");
@@ -11,6 +12,7 @@ const Header = () => {
     const [userrole, setUserrole] = useState("");
     const dropdownRef = useRef(null);
     const companyDropdownRef = useRef(null);
+    const userDropdownRef = useRef(null);
 
     const handleLogout = () => {
         localStorage.removeItem("userToken");
@@ -29,6 +31,9 @@ const Header = () => {
             }
             if (companyDropdownRef.current && !companyDropdownRef.current.contains(event.target)) {
                 setCompanyOpen(false);
+            }
+            if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
+                setuserOpen(false);
             }
         }
 
@@ -71,6 +76,28 @@ const Header = () => {
                         {isAuthenticated && userRole === "admin" && <Link to="/users">All Users</Link>}
                         <Link to="/job">New User Create</Link>
                         <Link to="/show-jobs">Show All Jobs</Link>
+
+                        {/* How Many Apply */}
+                        {(userRole === "admin" || userRole === "recruiter") && (
+                            <div className="nav-item dropdown" ref={userDropdownRef}>
+                                <button
+                                    className="nav-link dropdown-toggle btn btn-light"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setuserOpen((prev) => !prev);
+                                    }}
+                                >
+                                    Users
+                                </button>
+                                {userOpen && (
+                                    <ul className="dropdown-menu show position-absolute">
+                                        <li><Link to="/job-apply-list" className="dropdown-item">How Apply for</Link></li>
+                                        {/* <li><Link to="/company-Profile" className="dropdown-item">Company Profile</Link></li>
+                                        <li><Link to="/job-position" className="dropdown-item">Job Positions</Link></li> */}
+                                    </ul>
+                                )}
+                            </div>
+                        )}
 
                         {/* Company Dropdown */}
                         {(userRole === "admin" || userRole === "recruiter") && (
@@ -117,20 +144,10 @@ const Header = () => {
                         <Link to="/contact">Contact</Link>
                     </nav>
 
-                    <Link to="/login" onClick={handleLogout} className="text-dark text-decoration-none">
-                        <button type="button"
-                            className="btn btn-outline-secondary d-flex align-items-center mt-3 mt-md-0">
-                            {isAuthenticated ? 'Logout' : 'Login'}
-                            <svg fill="none" stroke="currentColor" className="bi bi-arrow-right ms-2"
-                                width="16" height="16" viewBox="0 0 24 24">
-                                <path d="M5 12h14M12 5l7 7-7 7"></path>
-                            </svg>
-                        </button>
-                    </Link>
+                    <div className="d-flex justify-content-end w-100 mt-3 gap-3 align-items-center">
 
-                    <div className="d-flex justify-content-end w-100 mt-3">
                         {isAuthenticated && (
-                            <span>
+                            <span className="d-flex gap-3">
                                 <div className="text-dark">
                                     User: <strong>{username}</strong>
                                 </div>
@@ -139,6 +156,18 @@ const Header = () => {
                                 </div>
                             </span>
                         )}
+                        <Link to="/login" onClick={handleLogout} className="text-dark text-decoration-none">
+                            <button type="button"
+                                className="btn btn-outline-secondary d-flex align-items-center mt-3 mt-md-0">
+                                {isAuthenticated ? 'Logout' : 'Login'}
+                                <svg fill="none" stroke="currentColor" className="bi bi-arrow-right ms-2"
+                                    width="16" height="16" viewBox="0 0 24 24">
+                                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </Link>
+
+
                     </div>
                 </div>
             </header>

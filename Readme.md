@@ -95,3 +95,9 @@ Update versions:
 [2.4] = Up to company, company profile, position add - complete
 
 [2.5] = CRUD on New job role done
+
+[2.6] = Read, Delete & Delete all for appy for the user Done
+
+=> Date convert
+    --> 2025-02-26T18:30:00.000Z == 2025-02-26
+    --> {company.created.split('T')[0]}
