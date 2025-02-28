@@ -87,11 +87,11 @@ const Header = () => {
                                         setuserOpen((prev) => !prev);
                                     }}
                                 >
-                                    Users
+                                    Users      
                                 </button>
                                 {userOpen && (
                                     <ul className="dropdown-menu show position-absolute">
-                                        <li><Link to="/job-apply-list" className="dropdown-item">How Apply for</Link></li>
+                                        <li><Link to="/job-apply-list" className="dropdown-item">How Many Apply for</Link></li>
                                         {/* <li><Link to="/company-Profile" className="dropdown-item">Company Profile</Link></li>
                                         <li><Link to="/job-position" className="dropdown-item">Job Positions</Link></li> */}
                                     </ul>

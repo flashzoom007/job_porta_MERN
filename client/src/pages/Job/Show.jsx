@@ -8,11 +8,13 @@ import { useNavigate } from 'react-router-dom';
 import { FaAngleRight } from "react-icons/fa6";
 import CreateJob from './CreateJob';
 import "bootstrap/dist/css/bootstrap.min.css";
+import ApplyForJobPopup from '../Popup/ApplyForJobPopup';
 
 const ShowJob = () => {
   const navigate = useNavigate();
   const [companyShow, setCompanyShow] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [ApplyForJob, setApplyForJob] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -28,6 +30,7 @@ const ShowJob = () => {
 
   useEffect(() => {
     getShowJobUsers(setCompanyShow, setShowModal);
+    // getShowJobUsers(setCompanyShow, setApplyForJob);
   }, [refresh]);
 
   const onSubmit = async (data) => {
@@ -74,6 +77,44 @@ const ShowJob = () => {
       toast.error(error.message || 'An error occurred');
     }
   };
+  const onApplyNow = async (data) => {
+    try {
+        let apiUrl = `${import.meta.env.VITE_BACKEND_URL}/create-apply-for-job`;
+
+        const userName = localStorage.getItem("userName");      
+
+        // Prepare payload
+        let payload = {
+            company_name: data.company_name,
+            user_name: userName,
+            position_name: data.role    , // Updated to match API field
+            resume: data.resume || "", // Ensure resume is included
+        };
+
+        console.log("API URL:", apiUrl);
+        console.log("Payload:", payload);
+
+        const response = await axios.post(apiUrl, payload, {
+            headers: { "Content-Type": "application/json" },
+        });
+
+        console.log("Response Data:", response.data);
+
+        if (response.data.statusCode === 200) {
+            closeModal();
+            handleRefresh();
+            toast.success(response.data.message);
+        } else if (response.data.statusCode === 100) {
+            toast.info(response.data.message);
+        } else {
+            toast.error(response.data.message);
+        }
+    } catch (error) {
+        console.error("Error applying for job:", error);
+        toast.error(error.response?.data?.message || "An error occurred while applying.");
+    }
+};
+
 
   const handleEdit = (company) => {
     setSelectedCompany(company);
@@ -99,9 +140,27 @@ const ShowJob = () => {
       toast.error("Failed to delete company.");
     }
   };
+  
+  const handleapplyforJob = (company) => {
+    setSelectedCompany(company);
+    setIsEditMode(true);
+    // setShowModal(true);
+    setApplyForJob(true)
 
+    // Ensure all values, including dropdowns, remain the same
+    setValue("company_name", company.company_name);
+    setValue("role", company.role);
+    setValue("description", company.description);
+    setValue("skills", company.skills);
+    setValue("salary", company.salary);
+    setValue("job_type", company.job_type); // Ensure dropdown value stays the same
+    setValue("experience", company.experience);
+    setValue("location", company.location);
+  
+  }
   const closeModal = () => {
     setShowModal(false);
+    setApplyForJob(false);
     setSelectedCompany(null);
     setIsEditMode(false);
     reset();
@@ -132,17 +191,39 @@ const ShowJob = () => {
           </button>
         </div>
       }
+
       {showModal && (
         <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{isEditMode ? 'Edit job' : 'Add job'}</h5>
+                <h5 className="modal-title">Add job</h5>
                 <button type="button" className="btn-close" onClick={closeModal} aria-label="Close"></button>
               </div>
               <div className="modal-body">
                 <CreateJob
                   onSubmit={onSubmit}
+                  isEditMode={isEditMode}
+                  closeModal={closeModal}
+                  selectedJob={selectedCompany}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {ApplyForJob && (
+        <div className="modal show d-block" style={{ background: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Add job</h5>
+                <button type="button" className="btn-close" onClick={closeModal} aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+                <ApplyForJobPopup
+                  onSubmit={onApplyNow}
                   isEditMode={isEditMode}
                   closeModal={closeModal}
                   selectedJob={selectedCompany}
@@ -176,7 +257,7 @@ const ShowJob = () => {
           <tbody>
             {companyShow.map((company, index) => (
               <tr key={company.id}>
-                {(userRole === "student" || userRole === "admin") && <td> <button className="btn btn-outline-primary" onClick={() => handleEdit(company)} > <FaEdit /> </button> </td>}
+                {(userRole === "student" || userRole === "admin") && <td> <button className="btn btn-outline-primary" onClick={() => handleapplyforJob(company)} > <FaEdit /> </button> </td>}
                 <td>{index + 1}</td>
                 <td>{company.company_name}</td>
                 <td>{company.role}</td>
@@ -188,7 +269,11 @@ const ShowJob = () => {
                 <td>{company.location}</td>
                 <td>{company.created_at.split("T")[0]}</td>
                 <td>{company.posted_by_name}</td>
-                {userRole !== "student" && <td> <button className="btn btn-outline-primary" onClick={() => handleEdit(company)} > <FaEdit /> </button> </td>}
+                {/* {userRole !== "student" &&  */}
+                <td> 
+                <button className="btn btn-outline-primary" onClick={() => handleEdit(company)} > <FaEdit /> </button> 
+                </td>
+                {/* } */}
                 {userRole !== "student" && <td> <button className="btn btn-outline-danger" onClick={() => handleDelete(company.id)} > <FaTrash /> </button> </td>}
               </tr>
             ))}

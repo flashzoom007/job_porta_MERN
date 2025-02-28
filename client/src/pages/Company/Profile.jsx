@@ -129,7 +129,7 @@ const Profile = () => {
                             <div className="modal-body">
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mb-3">
-                                        <label className="form-label">  Name</label>
+                                        <label className="form-label">Name</label>
                                         <select className="form-control" {...register('name', { required: true })}>
                                             <option value="">Select a company</option>
                                             {companyOptions.map((company) => (

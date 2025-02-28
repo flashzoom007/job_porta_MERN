@@ -98,7 +98,7 @@ const Name = () => {
                     }}
                     className="btn btn-outline-danger mb-3"
                 >
-                    Delete All 
+                    Delete All
                 </button>
             </div>
 
@@ -112,14 +112,15 @@ const Name = () => {
                             </div>
                             <div className="modal-body">
                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div className="mb-3">
-                                        <label className="form-label">Company Name</label>
+                                    <div className="input-group">
                                         <input
-                                            className="form-control"
+                                            type="text" required
                                             {...register('name', { required: true })}
                                         />
+                                        <label >Company Name</label>
                                         {errors.name && <p className="text-danger">Company name is required.</p>}
                                     </div>
+
                                     <div className="d-flex justify-content-end gap-2">
                                         <button type="submit" className="btn btn-outline-success">
                                             {isEditMode ? 'Update' : 'Add'}

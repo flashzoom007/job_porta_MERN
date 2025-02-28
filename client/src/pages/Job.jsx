@@ -66,21 +66,22 @@ const Job = () => {
             </div>
             <form onSubmit={handleSubmit(onSubmit)} method="POST">
 
-              <div className="mb-3">
-                <label className="form-label">Full Name</label>
-                <input
+              <div className="input-group">
+
+                <input required
                   type="text"
                   {...register('fullname', { required: true })}
-                  className={`form-control ${errors.fullname ? 'is-invalid' : ''}`}
+                  className={` ${errors.fullname ? 'is-invalid' : ''}`}
                 />
+                <label className="form-label">Full Name</label>
                 {errors.fullname && (
                   <div className="invalid-feedback">Full Name Field is required</div>
                 )}
               </div>
 
-              <div className="mb-3">
-                <label className="form-label">Phone Number</label>
-                <input
+              <div className="input-group">
+               
+                <input required
                   type="number"
                   {...register('number', {
                     required: true,
@@ -96,38 +97,41 @@ const Job = () => {
                       }
 
                     })}
-                  className={`form-control ${errors.number ? 'is-invalid' : ''}`}
+                  className={` ${errors.number ? 'is-invalid' : ''}`}
                 />
+                 <label className="form-label">Phone Number</label>
                 {errors.number && (
                   <div className="invalid-feedback">{errors.number.message}</div>
                 )}
               </div>
 
-              <div className="mb-3">
-                <label className="form-label">Email</label>
-                <input
+              <div className="input-group">
+               
+                <input required
                   type="email"
                   {...register('email', { required: true })}
-                  className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                  className={` ${errors.email ? 'is-invalid' : ''}`}
                 />
+                 <label className="form-label">Email</label>
                 {errors.email && (
                   <div className="invalid-feedback">Email Field is required</div>
                 )}
               </div>
 
-              <div className="mb-3">
-                <label className="form-label">Password</label>
-                <input
+              <div className="input-group">
+             
+                <input required
                   type="password"
                   {...register('password', { required: true })}
-                  className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                  className={` ${errors.password ? 'is-invalid' : ''}`}
                 />
+                   <label className="form-label">Password</label>
                 {errors.password && (
                   <div className="invalid-feedback">Password Field is required</div>
                 )}
               </div>
 
-              <div className="mb-3">
+              <div className="input-group">
                 <label className="form-label">Role</label>
                 <select
                   {...register('role', { required: true })}
@@ -143,23 +147,24 @@ const Job = () => {
                 )}
               </div>
 
-              <div className="mb-3">
-                <label className="form-label">Upload Photo</label>
-                <input
+              <div className="mb-3 d-flex gap-3 align-items-center">
+              <label className="form-label">Upload Photo</label>
+                <input required
                   type="file"
                   accept="image/*"
                   {...register('photos',
                     // { required: true }
                   )}
-                  className={`form-control ${errors.photos ? 'is-invalid' : ''}`}
+                  className={` ${errors.photos ? 'is-invalid' : ''}`}
                   onChange={handleFileChange}
                 />
+                   
                 {errors.photos && (
                   <div className="invalid-feedback">Upload the photo</div>
                 )}
               </div>
               <div className="d-grid">
-                <input
+                <input required
                   type="submit"
                   disabled={isSubmitting}
                   value={isSubmitting ? 'Submitting...' : 'Add User'}

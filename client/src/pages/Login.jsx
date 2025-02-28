@@ -31,7 +31,7 @@ const Login = () => {
                     'Content-Type': 'application/json',
                 }, body: JSON.stringify({ email, password, role }),
             });
-      
+
             const responseData = response.data;
             console.log("responseData", responseData);
 
@@ -48,6 +48,7 @@ const Login = () => {
                 localStorage.setItem("userRole", userRole);
                 localStorage.setItem("userId", responseData.user.id);
                 localStorage.setItem("userName", responseData.user.name);
+                localStorage.setItem("userEmail", responseData.user.email);
 
                 // Send user details to backend for logging
                 await axios.post(`${import.meta.env.VITE_BACKEND_URL}/log-login`, {
@@ -87,24 +88,26 @@ const Login = () => {
                     </div>
 
                     {/* Email Input */}
-                    <div className="mb-3">
-                        <label className="form-label">Email:</label>
+                    <div className="input-group">
+
                         <input
-                            type="email"
-                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                            type="email" required
+                            className={`${errors.email ? 'is-invalid' : ''}`}
                             {...register('email', { required: "Email field is required" })}
                         />
+                        <label className="form-label">Email:</label>
                         {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                     </div>
 
                     {/* Password Input */}
-                    <div className="mb-3">
-                        <label className="form-label">Password:</label>
+                    <div className="input-group">
+
                         <input
-                            type="password"
-                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                            type="password" required
+                            className={`${errors.password ? 'is-invalid' : ''}`}
                             {...register('password', { required: "Password field is required" })}
                         />
+                        <label className="form-label">Password:</label>
                         {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
                     </div>
 
