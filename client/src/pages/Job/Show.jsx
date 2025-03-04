@@ -79,41 +79,48 @@ const ShowJob = () => {
   };
   const onApplyNow = async (data) => {
     try {
-        let apiUrl = `${import.meta.env.VITE_BACKEND_URL}/create-apply-for-job`;
+      let apiUrl = `${import.meta.env.VITE_BACKEND_URL}/create-apply-for-job`;
 
-        const userName = localStorage.getItem("userName");      
+      const userName = localStorage.getItem("userName");
+      const formData = new FormData();
+   
+      formData.append("company_name", data.company_name);
+      formData.append("user_name", userName);
+      formData.append("position_name", data.role);
+      formData.append("resume", data.resume[0]);
+   
+      let payload = {
+        company_name: data.company_name,
+        user_name: userName,
+        position_name: data.role,
+        resume: data.resume[0],
+      };
+      console.log("API URL:", apiUrl);
+      console.log('company_name', data.company_name);
+      console.log('user_name', userName);
+      console.log('position_name', data.role);
+      console.log('resume', data.resume[0].name);
 
-        // Prepare payload
-        let payload = {
-            company_name: data.company_name,
-            user_name: userName,
-            position_name: data.role    , // Updated to match API field
-            resume: data.resume || "", // Ensure resume is included
-        };
+      const response = await axios.post(apiUrl, payload, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+console.log('data',response.data);
+      console.log("Response Data:", response.data);
 
-        console.log("API URL:", apiUrl);
-        console.log("Payload:", payload);
-
-        const response = await axios.post(apiUrl, payload, {
-            headers: { "Content-Type": "application/json" },
-        });
-
-        console.log("Response Data:", response.data);
-
-        if (response.data.statusCode === 200) {
-            closeModal();
-            handleRefresh();
-            toast.success(response.data.message);
-        } else if (response.data.statusCode === 100) {
-            toast.info(response.data.message);
-        } else {
-            toast.error(response.data.message);
-        }
+      if (response.data.statusCode === 200) {
+        closeModal();
+        handleRefresh();
+        toast.success(response.data.message);
+      } else if (response.data.statusCode === 100) {
+        toast.info(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error) {
-        console.error("Error applying for job:", error);
-        toast.error(error.response?.data?.message || "An error occurred while applying.");
+      console.error("Error applying for job:", error);
+      toast.error(error.response?.data?.message || "An error occurred while applying.");
     }
-};
+  };
 
 
   const handleEdit = (company) => {
@@ -140,12 +147,12 @@ const ShowJob = () => {
       toast.error("Failed to delete company.");
     }
   };
-  
+
   const handleapplyforJob = (company) => {
     setSelectedCompany(company);
     setIsEditMode(true);
     // setShowModal(true);
-    setApplyForJob(true)
+    setApplyForJob(true);
 
     // Ensure all values, including dropdowns, remain the same
     setValue("company_name", company.company_name);
@@ -156,8 +163,8 @@ const ShowJob = () => {
     setValue("job_type", company.job_type); // Ensure dropdown value stays the same
     setValue("experience", company.experience);
     setValue("location", company.location);
-  
   }
+
   const closeModal = () => {
     setShowModal(false);
     setApplyForJob(false);
@@ -167,7 +174,7 @@ const ShowJob = () => {
   };
 
   return (
-    
+
     <div className="container">
       {userRole !== "student" &&
         <div className='d-flex flex-wrap justify-content-between align-items-center my-3'>
@@ -244,7 +251,6 @@ const ShowJob = () => {
               <th>Role</th>
               <th>Description</th>
               <th>Skills</th>
-              {/* <th>Salary</th> */}
               <th>Job Type</th>
               <th>Experience<br />(Years)</th>
               <th>Location</th>
@@ -263,17 +269,16 @@ const ShowJob = () => {
                 <td>{company.role}</td>
                 <td>{company.description}</td>
                 <td>{company.skills}</td>
-                {/* <td>{company.salary}</td> */}
                 <td>{company.job_type}</td>
                 <td>{company.experience}</td>
                 <td>{company.location}</td>
                 <td>{company.created_at.split("T")[0]}</td>
                 <td>{company.posted_by_name}</td>
-                {/* {userRole !== "student" &&  */}
-                <td> 
-                <button className="btn btn-outline-primary" onClick={() => handleEdit(company)} > <FaEdit /> </button> 
-                </td>
-                {/* } */}
+                {userRole !== "student" &&
+                  <td>
+                    <button className="btn btn-outline-primary" onClick={() => handleEdit(company)} > <FaEdit /> </button>
+                  </td>
+                }
                 {userRole !== "student" && <td> <button className="btn btn-outline-danger" onClick={() => handleDelete(company.id)} > <FaTrash /> </button> </td>}
               </tr>
             ))}

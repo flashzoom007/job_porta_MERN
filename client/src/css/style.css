@@ -221,4 +221,28 @@ nav.nav.nav-menu .dropdown-menu.show a {
 
 .main-section label {
   margin: 0;
+}
+
+.section1 h1 {
+  font-size: 6rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+}
+.section1 .block-section {
+  display: flex;
+  gap: 1rem;
+}
+.section1 .block-section .block-inner-section {
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid #000;
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.4), 10px 10px 0px 0px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s linear;
+}
+.section1 .block-section .block-inner-section:hover {
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.4), 10px 10px 0px 0px rgba(0, 0, 0, 0.3), 15px 15px 0px 0px rgba(0, 0, 0, 0.2), 20px 20px 0px 0px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s linear;
+}
+.section1 .block-section #block-inner-section {
+  opacity: 1;
 }/*# sourceMappingURL=style.css.map */

@@ -247,6 +247,7 @@ nav.nav.nav-menu {
     border: 1.2px solid #000;
     outline: none;
     border-radius: 10px !important;
+    
 
 }
 
@@ -256,8 +257,39 @@ nav.nav.nav-menu {
     font-size: 12px;
     background: #fff;
 }
-.main-section label{
+
+.main-section label {
     margin: 0;
 }
 
 // Input End
+
+// Home Start
+.section1{
+h1 {
+    font-size: 6rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+}
+.block-section {
+    display: flex;
+    gap: 1rem;
+
+    .block-inner-section {
+        padding: 1rem;
+        border-radius: 1rem;
+        border: 1px solid #000;
+        box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.4), 10px 10px 0px 0px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s linear;
+        &:hover{
+            box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.4), 10px 10px 0px 0px rgba(0, 0, 0, 0.3), 15px 15px 0px 0px rgba(0, 0, 0, 0.2), 20px 20px 0px 0px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s linear;
+        }
+    }
+    #block-inner-section{
+        opacity: 1;
+    }
+}
+}
+
+// Home End

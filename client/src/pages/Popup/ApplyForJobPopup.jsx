@@ -69,7 +69,7 @@ const ApplyForJobPopup = ({ onSubmit, isEditMode, closeModal, selectedJob }) => 
                 <input
                     required
                     readOnly
-                    value={userEmail} 
+                    value={userEmail}
                     {...register("user_email", { required: true })}
                 />
                 <label>Email</label>
@@ -95,10 +95,14 @@ const ApplyForJobPopup = ({ onSubmit, isEditMode, closeModal, selectedJob }) => 
             {/* Resume Upload */}
             <div className="mb-3">
                 <label>Upload Resume</label>
-                <input type="file" accept=".pdf,.doc,.docx" 
-                // onChange={handleFileChange} 
-                className="form-control" />
+                <input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    {...register('resume', { required: 'Resume is required.' })}
+                    className="form-control"
+                />
             </div>
+
 
             {errors.photos && (
                 <div className="invalid-feedback">Upload the photo</div>
