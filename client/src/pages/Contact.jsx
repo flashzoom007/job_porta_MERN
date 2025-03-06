@@ -36,7 +36,7 @@ function Contact() {
                             />
                             <label>Your Name: </label>
                             {errors.fullname && <span className={errors.message ? '' : 'text-danger'}>Name Field is required</span>}
-                        </div>
+                        </div>                 
 
                         <div className='input-group'>
                             <input required
@@ -83,7 +83,7 @@ function Contact() {
                             <label className="form-label">Message</label>
                             <input
                                 type="textarea"
-                                className="form-control"                           
+                                className="form-control"
                             />
                             {errors.message && <p className="text-danger">{errors.message?.message}</p>}
                         </div>
